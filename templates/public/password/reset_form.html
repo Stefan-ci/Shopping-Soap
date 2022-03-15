@@ -1,0 +1,128 @@
+{% extends 'public/includes/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    Modifiez votre mot de passe | Bon Savon - CI
+{% endblock title %}
+
+
+{% block navbar %}
+    <header class="header shop">
+        <!-- Topbar -->
+		<div class="topbar">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-5 col-md-12 col-12">
+						<!-- Top Left -->
+						<div class="top-left">
+							<ul class="list-main">
+								<li>
+									<i class="ti-headphone-alt"></i>
+									+225 0143635648
+								</li>
+								<li>
+									<i class="ti-email"></i>
+									contact@ivysoap.com
+								</li>
+							</ul>
+						</div>
+						<!--/ End Top Left -->
+					</div>
+					<div class="col-lg-7 col-md-12 col-12">
+						<!-- Top Right -->
+						<div class="right-content">
+							<ul class="list-main">
+								{% if request.user.is_authenticated %}
+								<li>
+									<i class="ti-user"></i>
+									<a href="{% url 'profile' request.user.profile.unique_token %}">
+										Mon compte
+									</a>
+								</li>
+								{% else %}
+								<li>
+									<i class="ti-power-off"></i>
+									<a href="{% url 'login' %}">
+										Connexion
+									</a>
+								</li>
+								{% endif %}
+							</ul>
+						</div>
+						<!-- End Top Right -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- End Topbar -->
+        <div class="middle-inner">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12 col-md-2 col-12">
+						<!-- Logo -->
+						<div class="logo text-center">
+							<a href="{% url 'home' %}">
+								<img src="{% static 'assets/images/logo.png' %}" alt="logo">
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </header>
+{% endblock navbar %}
+
+
+{% block content %}
+    <section id="contact-us" class="contact-us section">
+		<div class="container">
+            <div class="contact-head">
+                <div class="row">
+                    <div class="col-lg-2 col-12"></div>
+                    <div class="col-lg-8 col-12">
+                        <div class="form-main">
+                            <div class="title">
+                                <h4 class="text-center">Réinitialisation</h4>
+                                <h3>
+                                    Veuillez entrer un nouveau mot de passe
+                                </h3>
+                                <p class="text-info">
+                                    Assurez-vous que les deux mots de passe concordent
+                                    et validez par la suite !
+                                    Ne l'oubliez pas cette fois svp!
+                                </p>
+                            </div>
+                            <form class="form" method="POST">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-lg-12 col-12">
+                                        <div class="form-group">
+                                            <label>Nouveau mot de passe<span>*</span></label>
+                                            <input type="password" name="new_password1" autocomplete="new-password" required id="id_new_password1"  style="border-radius:10px;">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-12">
+                                        <div class="form-group">
+                                            <label>Confirmer le nouveau mot de passe<span>*</span></label>
+                                            <input type="password" name="new_password2" autocomplete="new-password" required id="id_new_password2"  style="border-radius:10px;">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <div class="form-group button">
+                                            <button type="submit" class="btn ">
+                                                Enregistrer
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</section>
+{% endblock content %}
+
+{% block footer %}{% endblock footer %}

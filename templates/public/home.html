@@ -1,0 +1,313 @@
+{% extends 'public/includes/base.html' %} 
+
+
+{% load i18n %} 
+{% load static %} 
+{% load ratings %} 
+{% load humanize %} 
+{% load hitcount_tags %} 
+
+
+{% block title %} 
+    Bon Savon - CI
+{% endblock title %}
+
+{% block seo %}
+    <meta name="keywords" content="">
+    <meta name="title" content="Bon Savon - CI">
+    <meta name="locale" content="fr_CI">
+    <meta name="description" content="">
+    <meta property="og:title" content="Bon Savon - CI">
+    <meta property="og:url" content="{{ current_site }}{{ request.path }}">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="{% static 'assets/images/logo.png' %}">
+    <meta property="og:type" content="Site internet">
+    <meta property="og:locale" content="fr_CI">
+    <meta property="og:site_name" content="">
+{% endblock seo %}
+
+{% block extra_head %}{% endblock extra_head %}
+
+
+{% block content %}
+    <!-- Hero Section Begin -->
+    <section class="hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-9">
+                    <div class="hero__item set-bg" data-setbg="{% static 'assets/images/banner.jpg' %}">
+                        <div class="hero__text">
+                            <span>
+                                SAVON POUR TOUS
+                            </span>
+                            <h2>savon à base de plantes <br />100% organique</h2>
+                            <p>
+                                Vous pouvez récupérer votre colis au 
+                                magasin ou vous faire livrer
+                            </p>
+                            <a href="{% url 'item-list' %}" class="primary-btn">
+                                ALLEZ-Y
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Hero Section End -->
+
+
+
+    <!-- Categories Section Begin -->
+    <section class="categories">
+        <div class="container">
+            <div class="row">
+                <div class="categories__slider owl-carousel">
+                    <div class="col-lg-3">
+                        <div class="categories__item set-bg" data-setbg="{% static 'assets/images/categories/men.jpg' %}">
+                            <h5><a href="#">Hommes</a></h5>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="categories__item set-bg" data-setbg="{% static 'assets/images/categories/women.jpg' %}">
+                            <h5><a href="#">Femmes</a></h5>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="categories__item set-bg" data-setbg="{% static 'assets/images/categories/children.jpeg' %}">
+                            <h5><a href="#">Enfants</a></h5>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="categories__item set-bg" data-setbg="{% static 'assets/images/categories/offers.jpeg' %}">
+                            <h5><a href="#">Spécial</a></h5>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="categories__item set-bg" data-setbg="{% static 'assets/images/categories/all.jpeg' %}">
+                            <h5><a href="#">Tout</a></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Categories Section End -->
+
+
+    <!-- Featured Section Begin -->
+    <section class="featured spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <h2>Catalogués</h2>
+                    </div>
+                    <div class="featured__controls">
+                        <ul>
+                            <li class="active" data-filter="*">Tout</li>
+                            <li data-filter=".men">Hommes</li>
+                            <li data-filter=".women">Femmes</li>
+                            <li data-filter=".children">Enfants</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row featured__filter">
+                
+                {% for item in items %}
+                <div class="col-lg-3 col-md-4 col-sm-6 mix {{ item.type }}">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg" data-setbg="{{ item.picture.url }}">
+                            <ul class="featured__item__pic__hover">
+                                <li>
+                                    {% if not item in request.user.profile.favorite_items.all %}
+                                    <a href="{{ item.get_add_to_favorites }}" title="Ajouter aux favoris">
+                                        <i class="fa fa-heart"></i>
+                                    </a>
+                                    {% else %}
+                                    <a title="Retirer des favoris" href="{{ item.get_remove_from_favorites }}">
+                                        <i class="fa fa-heart text-danger"></i>
+                                    </a>
+                                    {% endif %}
+                                </li>
+                                <li>
+                                    <a href="{{ item.get_add_to_cart_url }}" title="Ajouter au panier" >
+                                        <i class="fa fa-shopping-cart"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6>
+                                <a href="{{ item.get_absolute_url }}">
+                                    {{ item.name|safe }}
+                                </a>
+                            </h6>
+                            <h5>
+                                {% if item.get_price == 0 %}
+                                <span class="text-danger">
+                                    GRATUIT
+                                </span>
+                                {% endif %}
+
+                                {% if item.get_price != 0 and item.discount_price %}
+                                <del class="old-price">{{ item.price }}</del>
+                                <span>{{ item.get_price }} fcfa</span>
+                                {% elif item.get_price != 0 %}
+                                <span>{{ item.get_price }} fcfa</span>
+                                {% endif %}
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                
+            </div>
+        </div>
+    </section>
+    <!-- Featured Section End -->
+
+
+
+    
+    {% if promotions %}
+    <!-- Banner Begin -->
+    <div class="banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <h2>Promotions</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-lg-1 col-md-1 col-sm-1"></div>
+                {% for promo in promotions %}
+                <div class="col-lg-5 col-md-5 col-sm-5 bg-light-blue m-1 p-1" style="border-radius:1.5rem;">
+                    <div class="row">
+                        <div class="col-lg-5 col-md-5 col-sm-5">
+                            <div class="banner__pic">
+                                <img src="{{ promo.banner.url }}" alt=""
+                                    style="border-radius:1.5rem;" class="m-2">
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-7">
+                            <h5>{{ promo.title|safe }}</h5>
+                            <div class="align-content-center align-items-center">
+                                {{ promo.description|safe|truncatechars:50 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- Banner End -->
+    {% endif %}
+
+
+    {% if new_items or popular_items %}
+    <!-- Latest Product Section Start -->
+    <section class="latest-product spad">
+        <div class="container">
+            <div class="row">
+                {% if new_items %}
+                <div class="col-lg-6 col-md-6">
+                    <div class="latest-product__text">
+                        <h4>Nouveautés</h4>
+                        <div class="latest-product__slider owl-carousel">
+                            {% for item in new_items %}
+                            {% if item.get_price != 0 %}
+                            <div class="latest-prdouct__slider__item">
+                                <a href="{{ item.get_absolute_url }}" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="{{ item.picture.url }}" alt="">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>{{ item.name }}</h6>
+                                        <span>{{ item.get_price }}</span>
+                                    </div>
+                                </a>
+                                <a href="{{ item.get_absolute_url }}" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="{{ item.picture.url }}" alt="">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>{{ item.name }}</h6>
+                                        <span>{{ item.get_price }}</span>
+                                    </div>
+                                </a>
+                                <a href="{{ item.get_absolute_url }}" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="{{ item.picture.url }}" alt="">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>{{ item.name }}</h6>
+                                        <span>{{ item.get_price }}</span>
+                                    </div>
+                                </a>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if popular_items %}
+                <div class="col-lg-6 col-md-6">
+                    <div class="latest-product__text">
+                        <h4>Populaires</h4>
+                        <div class="latest-product__slider owl-carousel">
+                            {% for item in popular_items %}
+                            {% if item.get_price != 0 %}
+                            <div class="latest-prdouct__slider__item">
+                                <a href="{{ item.get_absolute_url }}" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="{{ item.picture.url }}" alt="">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>{{ item.name }}</h6>
+                                        <span>{{ item.get_price }}</span>
+                                    </div>
+                                </a>
+                                <a href="{{ item.get_absolute_url }}" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="{{ item.picture.url }}" alt="">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>{{ item.name }}</h6>
+                                        <span>{{ item.get_price }}</span>
+                                    </div>
+                                </a>
+                                <a href="{{ item.get_absolute_url }}" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="{{ item.picture.url }}" alt="">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>{{ item.name }}</h6>
+                                        <span>{{ item.get_price }}</span>
+                                    </div>
+                                </a>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </section>
+    <!-- Latest Product Section End -->
+    {% endif %}
+
+
+{% endblock content %}
+
+

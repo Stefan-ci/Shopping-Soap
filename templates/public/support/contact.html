@@ -1,0 +1,130 @@
+
+{% extends 'public/includes/base.html' %}
+
+{% load static %}
+
+{% block seo %}
+    <meta name="keywords" content="">
+    <meta name="title" content="Contact | Bon Savon - CI">
+    <meta name="locale" content="fr_CI">
+    <meta name="description" content="">
+    <meta property="og:title" content="Contact | Bon Savon - CI">
+    <meta property="og:url" content="{{ current_site }}{{ request.path }}">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="{% static 'assets/images/logo.png' %}">
+    <meta property="og:type" content="Site internet">
+    <meta property="og:locale" content="fr_CI">
+    <meta property="og:site_name" content="">
+{% endblock seo %}
+
+
+{% block title %}
+        Contact | Bon Savon - CI
+{% endblock title %}
+
+{% block extra_head %}{% endblock extra_head %}
+
+
+
+
+
+
+{% block content %}
+	<!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="{% static 'assets/images/breadcrumb.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Contact</h2>
+                        <div class="breadcrumb__option">
+                            <a href="{% url 'home' %}">Accueil</a>
+                            <span>Contact</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+
+
+	<!-- Contact Section Begin -->
+    <section class="contact spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 text-center">
+                    <div class="contact__widget">
+                        <span class="icon_phone"></span>
+                        <h4>Téléphone</h4>
+                        <p>+225 0143635648</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 text-center">
+                    <div class="contact__widget">
+                        <span class="icon_pin_alt"></span>
+                        <h4>Adresse</h4>
+                        <p>60-49 Rue 11378 Abidjan</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 text-center">
+                    <div class="contact__widget">
+                        <span class="icon_clock_alt"></span>
+                        <h4>Disponibilité</h4>
+                        <p>08:00 - 20:00</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 text-center">
+                    <div class="contact__widget">
+                        <span class="icon_mail_alt"></span>
+                        <h4>Email</h4>
+                        <p>contact@email.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Contact Section End -->
+
+
+
+
+
+	<!-- Contact Form Begin -->
+    <div class="contact-form spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="contact__form__title">
+                        <h2>Laissez-nous un message</h2>
+                    </div>
+                </div>
+            </div>
+            <form method="POST">
+				{% csrf_token %}
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <input name="name" type="text" placeholder="Votre nom et/ou prenom" style="border-radius:15px;">
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <input name="email" type="email" placeholder="Votre adresse mail" style="border-radius:15px;">
+                    </div>
+					<div class="col-lg-12 col-md-12">
+                        <input name="subject" type="text" placeholder="Quel est votre sujet ?" style="border-radius:15px;">
+                    </div>
+                    <div class="col-lg-12 text-center">
+                        <textarea placeholder="Quel est votre message" style="border-radius:15px;"></textarea>
+                        <button type="submit" class="site-btn">
+							Envoyer
+						</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Contact Form End -->
+
+{% endblock content %}
+
+

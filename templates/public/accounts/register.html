@@ -1,0 +1,106 @@
+{% extends 'public/includes/base.html' %}
+
+{% load static %}
+
+
+{% block seo %}
+    <meta name="keywords" content="">
+    <meta name="title" content="Inscription | Bon Savon - CI">
+    <meta name="locale" content="fr_CI">
+    <meta name="description" content="">
+    <meta property="og:title" content="Inscription | Bon Savon - CI">
+    <meta property="og:url" content="{{ current_site }}{{ request.path }}">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="{% static 'assets/images/logo.png' %}">
+    <meta property="og:type" content="Site internet">
+    <meta property="og:locale" content="fr_CI">
+    <meta property="og:site_name" content="">
+{% endblock seo %}
+
+
+{% block title %}
+        Inscription | Bon Savon - CI
+{% endblock title %}
+
+{% block extra_head %}{% endblock extra_head %}
+
+
+
+{% block content %}
+    
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="{% static 'assets/images/breadcrumb.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Inscription</h2>
+                        <div class="breadcrumb__option">
+                            <a href="{% url 'home' %}">Accueil</a>
+                            <a href="{% url 'login' %}">Connexion</a>
+                            <span>Inscription</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+
+
+    <!-- Login Form Begin -->
+    <div class="contact-form spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="contact__form__title">
+                        <h2>Inscrivez-vous</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 col-md-2"></div>
+                <div class="col-lg-8 col-md-8 border p-3 rounded">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <label>Nom d'utilisateur <span class="text-danger">*</span></label>
+                                <input name="username" type="text" placeholder="Votre nom d'utilisateur" style="border-radius:15px;">
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <label>Email <span class="text-danger">*</span></label>
+                                <input name="email" type="email" placeholder="Votre adresse mail"
+                                    style="border-radius:15px;">
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <label>Mot de passe <span class="text-danger">*</span></label>
+                                <input name="password1" type="password" placeholder="Votre mot de passe" style="border-radius:15px;">
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <label>Confirmez le mot de passe <span class="text-danger">*</span></label>
+                                <input name="password2" type="password" placeholder="Confirmez votre mot de passe" style="border-radius:15px;">
+                            </div>
+                            <div class="col-lg-12 text-center">
+                                <button type="submit" class="site-btn">
+                                    Inscription
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <span class="right text-right" style="float:right;">
+                                Avez-vous déjà un compte ? 
+                                <a href="{% url 'login' %}" class="text-primary">
+                                    Connectez-vous.
+                                </a>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Login Form End -->
+	
+{% endblock content %}

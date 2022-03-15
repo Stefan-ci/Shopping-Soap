@@ -1,0 +1,224 @@
+{% extends 'public/includes/base.html' %}
+
+{% load static %}
+{% load ratings %}
+
+{% block seo %}
+    <meta name="keywords" content="{% for tag in item.tags.all %}{{tag}},{% endfor %}">
+    <meta name="title" content="{{ item.name|safe }} | Bon Savon - CI">
+    <meta name="locale" content="fr_CI">
+    <meta name="description" content="{{ item.description|safe }}">
+    <meta property="og:title" content="{{ item.name|safe }} | Bon Savon - CI">
+    <meta property="og:url" content="{{ current_site }}{{ request.path }}">
+    <meta property="og:description" content="{{ item.description|safe }}">
+    <meta property="og:image" content="{{ item.picture.url }}">
+    <meta property="og:type" content="Site internet">
+    <meta property="og:locale" content="fr_CI">
+    <meta property="og:site_name" content="">
+{% endblock seo %}
+
+
+{% block title %}
+        {{ item.name|safe }} | Bon Savon - CI
+{% endblock title %}
+
+{% block extra_head %}{% endblock extra_head %}
+
+
+
+
+{% block content %}
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="{% static 'assets/images/breadcrumb.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>{{ item.name|safe }}</h2>
+                        <div class="breadcrumb__option">
+                            <a href="{% url 'home' %}">Accueil</a>
+                            <a href="{% url 'item-list' %}">Articles</a>
+                            <span>{{ item.name|safe }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+
+    <!-- Product Details Section Start -->
+    <section class="product-details spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="product__details__pic">
+                        <div class="product__details__pic__item">
+                            <img class="product__details__pic__item--large" src="{{ item.picture.url }}" alt="">
+                        </div>
+                        <div class="product__details__pic__slider owl-carousel">
+                            {% if item.picture_2 %}
+                            <img data-imgbigurl="{{ item.picture_2.url }}" src="{{ item.picture_2.url }}" alt="">
+                            {% endif %}
+                            {% if item.picture_3 %}
+                            <img data-imgbigurl="{{ item.picture_3.url }}" src="{{ item.picture_3.url }}" alt="">
+                            {% endif %}
+                            {% if item.picture_4 %}
+                            <img data-imgbigurl="{{ item.picture_4.url }}" src="{{ item.picture_4.url }}" alt="">
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="product__details__text">
+                        <h3>{{ item.name|safe }}</h3>
+                        <div class="product__details__rating" style="margin-top:-6.5rem; z-index:1;">
+                            {% ratings item %}
+                        </div>
+                        <div class="product__details__price">
+                            {{ item.get_price }} fcfa
+                        </div>
+                        <p>
+                            {{ item.description|safe }}
+                        </p>
+                        <div class="product__details__quantity">
+                            <div class="quantity">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <input class="form-control mb-2" type="number" value="1" min="1" max="100" name="quantity">
+                                    <input value="Ajouter au panier"  type="submit" class="primary-btn">
+                                </form>
+                            </div>
+                        </div>
+                        {% if not item in request.user.profile.favorite_items.all %}
+                        <a href="{{ item.get_add_to_favorites }}" class="heart-icon" title="Ajouter aux favoris">
+                            <span class="icon_heart_alt"></span>
+                        </a>
+                        {% else %}
+                        <a title="Retirer des favoris" class="heart-icon" href="{{ item.get_remove_from_favorites }}">
+                            <i class="fa fa-heart text-danger"></i>
+                        </a>
+                        {% endif %}
+                        <ul>
+                            {% if item.is_available == 'Disponible' %}
+                            <li>
+                                <b>Disponibilité</b>
+                                <span>{{ item.is_available|safe }}</span>
+                            </li>
+                            {% else %}
+                            <li class="text-danger">
+                                <b>Disponibilité</b>
+                                <span>{{ item.is_available|safe }}</span>
+                            </li>
+                            {% endif %}
+                            <li>
+                                <b>Délai de livraison</b>
+                                <span>
+                                    {{ item.shipping_duration }} jours
+                                </span>
+                            </li>
+                            <li><b>Qualité</b>
+                                <span>Supérieure, garantie</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                {% if item.full_description %}
+                <div class="col-lg-12">
+                    <div class="product__details__tab">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab" aria-selected="true">
+                                    Informations additives
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                                <div class="product__details__tab__desc">
+                                    <p>
+                                        {{ item.full_description }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </section>
+    <!-- Product Details Section End -->
+
+    {% if similar_items %}
+    <!-- Related Product Section Begin -->
+    <section class="related-product">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title related__product__title">
+                        <h2>Articles similaires</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                
+                {% for similar_item in similar_items %}
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="{{ similar_item.picture.url }}">
+                            <ul class="product__item__pic__hover">
+                                <li>
+                                    {% if not similar_item in request.user.profile.favorite_items.all %}
+                                    <a href="{{ similar_item.get_add_to_favorites }}" title="Ajouter aux favoris">
+                                        <i class="fa fa-heart"></i>
+                                    </a>
+                                    {% else %}
+                                    <a title="Retirer des favoris" href="{{ similar_item.get_remove_from_favorites }}">
+                                        <i class="fa fa-heart text-danger"></i>
+                                    </a>
+                                    {% endif %}
+                                </li>
+                                <li>
+                                    <a href="{{ similar_item.get_add_to_cart_url }}" title="Ajouter au panier" >
+                                        <i class="fa fa-shopping-cart"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6>
+                                <a href="{{ similar_item.get_absolute_url }}">
+                                    {{ similar_item.name|safe }}
+                                </a>
+                            </h6>
+                            <h5>
+                                {% if item.get_price == 0 %}
+                                <span class="text-danger">
+                                    GRATUIT
+                                </span>
+                                {% endif %}
+
+                                {% if item.get_price != 0 and item.discount_price %}
+                                <del class="old-price">{{ item.price }}</del>
+                                <span>{{ item.get_price }} fcfa</span>
+                                {% elif item.get_price != 0 %}
+                                <span>{{ item.get_price }} fcfa</span>
+                                {% endif %}
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                
+            </div>
+        </div>
+    </section>
+    <!-- Related Product Section End -->
+    {% endif %}
+
+{% endblock content %}
+

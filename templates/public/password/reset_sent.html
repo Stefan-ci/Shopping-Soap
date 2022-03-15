@@ -1,0 +1,30 @@
+{% extends 'public/includes/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    Email envoyé | Bon Savon - CI
+{% endblock title %}
+
+{% block content %}
+	<div class="container pt-5">
+        <div class="row pt-5">
+            <div class="offset-lg-3 col-lg-6">
+                <div class="center-text">
+                    <div class="alert alert-info show fade" role="alert">
+                        <h4>
+                            <i class="fa fa-check fa-sm fa-fw text-success"></i> 
+                            Email envoyé !
+                        </h4>
+                        <p>
+                            Si vous avez un compte sur notre site, veuillez vérifier votre boîte électronique ou votre dossier <b>spam</b> ! Nous vous avons envoyé(e) un messsage avec des instructions pour réinitialiser votre mot de passe!
+                        </p>
+                        <a href="{% url 'home' %}">
+                            Retour à la page d'accueil
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

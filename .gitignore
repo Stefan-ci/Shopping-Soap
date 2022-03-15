@@ -1,0 +1,6 @@
+.DS_STORE
+draft.*
+env/
+collectstatic/*
+*/__pycache__/*.cpython-39.pyc
+*/migrations/__pycache__/*.cpython-39.pyc

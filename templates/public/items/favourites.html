@@ -1,0 +1,113 @@
+{% extends 'public/includes/base.html' %}
+
+{% load i18n %}
+{% load static %}
+{% load ratings %}
+{% load humanize %}
+{% load hitcount_tags %}
+
+
+{% block seo %}
+    <meta name="keywords" content="">
+    <meta name="title" content="Mes articles favoris | Bon Savon - CI">
+    <meta name="locale" content="fr_CI">
+    <meta name="description" content="">
+    <meta property="og:title" content="Mes articles favoris | Bon Savon - CI">
+    <meta property="og:url" content="{{ current_site }}{{ request.path }}">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="{% static 'assets/images/logo.png' %}">
+    <meta property="og:type" content="Site internet">
+    <meta property="og:locale" content="fr_CI">
+    <meta property="og:site_name" content="">
+{% endblock seo %}
+
+
+{% block title %}
+        Mes articles favoris | Bon Savon - CI
+{% endblock title %}
+
+{% block extra_head %}{% endblock extra_head %}
+
+
+
+
+
+
+{% block content %}
+
+    <!-- Featured Section Begin -->
+    <section class="featured spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <h2>
+                            Mes articles préférés({{ request.user.profile.count_fav_items }})
+                        </h2>
+                    </div>
+                    <div class="featured__controls">
+                        <ul>
+                            <li class="active" data-filter="*">Tout</li>
+                            <li data-filter=".men">Hommes</li>
+                            <li data-filter=".women">Femmes</li>
+                            <li data-filter=".children">Enfants</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row featured__filter">
+                
+                {% for item in items %}
+                <div class="col-lg-3 col-md-4 col-sm-6 mix {{ item.type }}">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg" data-setbg="{{ item.picture.url }}">
+                            <ul class="featured__item__pic__hover">
+                                <li>
+                                    {% if not item in request.user.profile.favorite_items.all %}
+                                    <a href="{{ item.get_add_to_favorites }}" title="Ajouter aux favoris">
+                                        <i class="fa fa-heart"></i>
+                                    </a>
+                                    {% else %}
+                                    <a title="Retirer des favoris" href="{{ item.get_remove_from_favorites }}">
+                                        <i class="fa fa-heart text-danger"></i>
+                                    </a>
+                                    {% endif %}
+                                </li>
+                                <li>
+                                    <a href="{{ item.get_add_to_cart_url }}" title="Ajouter au panier" >
+                                        <i class="fa fa-shopping-cart"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6>
+                                <a href="{{ item.get_absolute_url }}">
+                                    {{ item.name|safe }}
+                                </a>
+                            </h6>
+                            <h5>
+                                {% if item.get_price == 0 %}
+                                <span class="text-danger">
+                                    GRATUIT
+                                </span>
+                                {% endif %}
+
+                                {% if item.get_price != 0 and item.discount_price %}
+                                <del class="old-price">{{ item.price }}</del>
+                                <span>{{ item.get_price }} fcfa</span>
+                                {% elif item.get_price != 0 %}
+                                <span>{{ item.get_price }} fcfa</span>
+                                {% endif %}
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                
+            </div>
+        </div>
+    </section>
+    <!-- Featured Section End -->
+
+{% endblock content %}

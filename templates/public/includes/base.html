@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" prefix="og: https://ogp.me/ns#" xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="theme-color" content="#F7941D">
+    <meta name="msapplication-navbutton-color" content="#F7941D">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="robots" content="all">
+    <meta name="language" content="fr">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block seo %}{% endblock seo %}
+    <link rel="canonical" href="{{ current_site }}{{ request.path_info }}">
+    <link rel="shortcut icon" href="{% static 'assets/images/favicon.png' %}">
+    <script src="{% static 'js/htmx.min.js' %}"></script>
+    <script src="{% static 'js/toastify-js.js' %}"></script>
+    <link href="{% static 'css/toastify.min.css' %}" rel="stylesheet">
+    <link href="{% static 'star-ratings/css/star-ratings.css' %}" rel="stylesheet">
+    <script src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+    {% block style %}
+        {% include 'public/includes/styles.html' %}
+    {% endblock style %}
+    <title>{% block title %}{% endblock title %}</title>
+    {% block extra_head %}{% endblock extra_head %}
+    <style>
+        :root {
+            --warning: #fb6340 !important;
+            --info: #11cdef !important;
+            --error: #f5365c !important;
+            --success: #2dce89 !important;
+            --debug: #ddf509 !important;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+	<!-- End Preloader -->
+
+
+    {% block navbar %}
+        {% include 'public/includes/navbar.html' %}
+    {% endblock navbar %}
+    {% block content %}{% endblock content %}
+    {% block extra_content %}{% endblock extra_content %}
+    {% block footer %}
+        {% include 'public/includes/footer.html' %}
+    {% endblock footer %}
+    {% if messages %}
+    {% for message in messages %}
+    <script>
+        Toastify({
+            text: "{{ message }}",
+            duration: 7000,
+            close: true,
+            gravity: "top",
+            position: "center",
+            stopOnFocus: true,
+            newWindow: true,
+            style: {
+                background: "var(--{{message.tags}})",
+            },
+            offset: {
+                x: 50,
+                y: 10
+            }
+        }).showToast();
+    </script>
+    {% endfor %}
+    {% endif %}
+    <script>
+        document.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        });
+    </script>
+    {% block script %}
+        {% include 'public/includes/scripts.html' %}
+    {% endblock script %}
+    {% block extra_script %}{% endblock extra_script %}
+</body>
+</html>

@@ -1,0 +1,98 @@
+{% extends 'public/includes/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    Mot de passe réinitialisé | Bon Savon - CI
+{% endblock title %}
+
+
+{% block navbar %}
+    <header class="header shop">
+        <!-- Topbar -->
+		<div class="topbar">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-5 col-md-12 col-12">
+						<!-- Top Left -->
+						<div class="top-left">
+							<ul class="list-main">
+								<li>
+									<i class="ti-headphone-alt"></i>
+									+225 0143635648
+								</li>
+								<li>
+									<i class="ti-email"></i>
+									contact@ivysoap.com
+								</li>
+							</ul>
+						</div>
+						<!--/ End Top Left -->
+					</div>
+					<div class="col-lg-7 col-md-12 col-12">
+						<!-- Top Right -->
+						<div class="right-content">
+							<ul class="list-main">
+								{% if request.user.is_authenticated %}
+								<li>
+									<i class="ti-user"></i>
+									<a href="{% url 'profile' request.user.profile.unique_token %}">
+										Mon compte
+									</a>
+								</li>
+								{% else %}
+								<li>
+									<i class="ti-power-off"></i>
+									<a href="{% url 'login' %}">
+										Connexion
+									</a>
+								</li>
+								{% endif %}
+							</ul>
+						</div>
+						<!-- End Top Right -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- End Topbar -->
+        <div class="middle-inner">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12 col-md-2 col-12">
+						<!-- Logo -->
+						<div class="logo text-center">
+							<a href="{% url 'home' %}">
+								<img src="{% static 'assets/images/logo.png' %}" alt="logo">
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </header>
+{% endblock navbar %}
+
+{% block content %}
+	<div class="container pt-5">
+        <div class="row pt-5">
+        	<div class="offset-lg-3 col-lg-6">
+        		<div class="center-text">
+		        	<div class="alert alert-success show fade" role="alert">
+		        	 	<p>
+		        	 		Mot de passe réinitialisé avec succès. Vous pouvez vous <a href="{% url 'login' %}">connecter</a> à nouveau avec votre nouveau mot de passe!
+		        	 	</p>
+		        	</div>
+					<div class="col-12 text-center">
+						<div class="button">
+							<a class="btn text-white" href="{% url 'home' %}">
+								Page d'accueil
+							</a>
+						</div>
+					</div>
+				</div>
+        	</div>
+        </div>
+    </div>
+{% endblock content %}
+{% block footer %}{% endblock footer %}
