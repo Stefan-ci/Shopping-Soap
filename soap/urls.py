@@ -20,7 +20,7 @@ urlpatterns = [
     path('ckeditor/', include('ckeditor_uploader.urls')),
     
     path('', include('website.urls')),
-    path('blog/', include('blog.urls')),
+    path('blog/', include('blog.urls', namespace='blog')),
 
     path('robots.txt/', TemplateView.as_view(
         template_name='robots.txt',

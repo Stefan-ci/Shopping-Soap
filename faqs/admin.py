@@ -8,7 +8,7 @@ class FAQAdmin(ImportExportModelAdmin):
     prepopulated_fields = {
         'slug': ('question',),
     }
-    list_display = ['question', 'answer', 'is_public', 'date']
+    list_display = ['question', 'is_public', 'date']
     list_filter = ['is_public', 'date']
     search_fields = ['question', 'answer']
     date_hierarchy = 'date'

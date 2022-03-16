@@ -7,7 +7,7 @@ class HomeSitemap(Sitemap):
     changefreq = 'daily'
 
     def items(self):
-        return ['home', 'item-list', 'item-tag', 'all-items', 'men-items',
+        return ['home', 'item-list', 'all-items', 'men-items',
                     'women-items', 'children-items', 'search-items']
 
     def location(self, item):
@@ -31,9 +31,10 @@ class StaticSitemap(Sitemap):
             'favourites',
             'country-cities',
             
+            'blog:posts',
+            
             'about',
             'contact',
-            'support',
             'reset_password',
             'password_reset_done',
             'password_reset_complete',

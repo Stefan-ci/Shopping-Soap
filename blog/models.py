@@ -15,7 +15,7 @@ class Post(models.Model):
 
 
     class Meta:
-        ordering = ['-date']
+        ordering = ['-date', 'title', 'is_public']
         verbose_name = "Publication"
         verbose_name_plural = "Publications"
     
