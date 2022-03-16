@@ -483,9 +483,9 @@ def confirm_order_view(request):
 
             # Creating sale object
             Sales.objects.create(
-                amount=order.get_total(),
+                amount=order.order_total,
                 sale_type="Vente",
-                reason=f"Nouvelle commande d'article. Commande:{order.unique_code}",
+                reason=f"Nouvelle commande. Commande:{order.unique_code}",
             )
 
             # Sending email to admins & user
