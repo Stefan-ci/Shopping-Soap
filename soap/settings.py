@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     
     # LOCALE APPS
     'address.apps.AddressConfig',
+    'blog.apps.BlogConfig',
     'contacts.apps.ContactsConfig',
     'coupons.apps.CouponsConfig',
     'faqs.apps.FaqsConfig',

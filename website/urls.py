@@ -55,9 +55,12 @@ urlpatterns = [
     path('contactez-nous/', views.contact_view, name='contact'),
 
     
+    
+    
    	path('recherches/', search_soaps, name='search-items'),
 	path('commande/imprimer/pdf/<str:unique_code>/', render_order_to_pdf_view, name='render_order_to_pdf'),
    	path('newsletter/souscrire/', views.subscribe_newsletter, name='subscribe-newsletter'),
+    
     
     
     # Password reset URLs
