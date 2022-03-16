@@ -1008,8 +1008,8 @@ ol {
 }
 
 .latest-product__item__pic img {
-    height: 110px;
-    width: 110px;
+    height: 70px !important;
+    width: 70px !important;
 }
 
 .latest-product__item__text {

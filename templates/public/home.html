@@ -211,7 +211,8 @@
         <div class="container">
             <div class="row">
                 {% if new_items %}
-                <div class="col-lg-6 col-md-6">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-4 col-md-4">
                     <div class="latest-product__text">
                         <h4>Nouveautés</h4>
                         <div class="latest-product__slider owl-carousel">
@@ -220,7 +221,7 @@
                             <div class="latest-prdouct__slider__item">
                                 <a href="{{ item.get_absolute_url }}" class="latest-product__item">
                                     <div class="latest-product__item__pic">
-                                        <img src="{{ item.picture.url }}" alt="">
+                                        <img src="{{ item.picture.url }}" alt="" height="70" width="70">
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6>{{ item.name }}</h6>
@@ -229,7 +230,7 @@
                                 </a>
                                 <a href="{{ item.get_absolute_url }}" class="latest-product__item">
                                     <div class="latest-product__item__pic">
-                                        <img src="{{ item.picture.url }}" alt="">
+                                        <img src="{{ item.picture.url }}" alt="" height="70" width="70">
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6>{{ item.name }}</h6>
@@ -238,7 +239,7 @@
                                 </a>
                                 <a href="{{ item.get_absolute_url }}" class="latest-product__item">
                                     <div class="latest-product__item__pic">
-                                        <img src="{{ item.picture.url }}" alt="">
+                                        <img src="{{ item.picture.url }}" alt="" height="70" width="70">
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6>{{ item.name }}</h6>
@@ -254,7 +255,7 @@
                 {% endif %}
                 
                 {% if popular_items %}
-                <div class="col-lg-6 col-md-6">
+                <div class="col-lg-4 col-md-4">
                     <div class="latest-product__text">
                         <h4>Populaires</h4>
                         <div class="latest-product__slider owl-carousel">
@@ -263,7 +264,7 @@
                             <div class="latest-prdouct__slider__item">
                                 <a href="{{ item.get_absolute_url }}" class="latest-product__item">
                                     <div class="latest-product__item__pic">
-                                        <img src="{{ item.picture.url }}" alt="">
+                                        <img src="{{ item.picture.url }}" alt="" height="70" width="70">
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6>{{ item.name }}</h6>
@@ -272,7 +273,7 @@
                                 </a>
                                 <a href="{{ item.get_absolute_url }}" class="latest-product__item">
                                     <div class="latest-product__item__pic">
-                                        <img src="{{ item.picture.url }}" alt="">
+                                        <img src="{{ item.picture.url }}" alt="" height="70" width="70">
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6>{{ item.name }}</h6>
@@ -281,7 +282,7 @@
                                 </a>
                                 <a href="{{ item.get_absolute_url }}" class="latest-product__item">
                                     <div class="latest-product__item__pic">
-                                        <img src="{{ item.picture.url }}" alt="">
+                                        <img src="{{ item.picture.url }}" alt="" height="70" width="70">
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6>{{ item.name }}</h6>
