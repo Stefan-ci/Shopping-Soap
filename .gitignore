@@ -2,5 +2,5 @@
 draft.*
 env/
 collectstatic/*
-*/__pycache__/*.cpython-39.pyc
-*/migrations/__pycache__/*.cpython-39.pyc
+*/__pycache__/*.cpython-310.pyc
+*/migrations/__pycache__/*.cpython-310.pyc
