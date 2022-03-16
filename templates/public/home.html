@@ -66,27 +66,22 @@
                 <div class="categories__slider owl-carousel">
                     <div class="col-lg-3">
                         <div class="categories__item set-bg" data-setbg="{% static 'assets/images/categories/men.jpg' %}">
-                            <h5><a href="#">Hommes</a></h5>
+                            <h5><a href="{% url 'men-items' %}">Hommes</a></h5>
                         </div>
                     </div>
                     <div class="col-lg-3">
                         <div class="categories__item set-bg" data-setbg="{% static 'assets/images/categories/women.jpg' %}">
-                            <h5><a href="#">Femmes</a></h5>
+                            <h5><a href="{% url 'women-items' %}">Femmes</a></h5>
                         </div>
                     </div>
                     <div class="col-lg-3">
                         <div class="categories__item set-bg" data-setbg="{% static 'assets/images/categories/children.jpeg' %}">
-                            <h5><a href="#">Enfants</a></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="categories__item set-bg" data-setbg="{% static 'assets/images/categories/offers.jpeg' %}">
-                            <h5><a href="#">Spécial</a></h5>
+                            <h5><a href="{% url 'children-items' %}">Enfants</a></h5>
                         </div>
                     </div>
                     <div class="col-lg-3">
                         <div class="categories__item set-bg" data-setbg="{% static 'assets/images/categories/all.jpeg' %}">
-                            <h5><a href="#">Tout</a></h5>
+                            <h5><a href="{% url 'all-items' %}">Tout</a></h5>
                         </div>
                     </div>
                 </div>

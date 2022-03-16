@@ -9,10 +9,10 @@
 
 {% block seo %}
     <meta name="keywords" content="">
-    <meta name="title" content="Catégories {{ request.GET.category}} | Bon Savon - CI">
+    <meta name="title" content="Articles pour tout type de peau et tout âge | Bon Savon - CI">
     <meta name="locale" content="fr_CI">
     <meta name="description" content="">
-    <meta property="og:title" content="Catégories {{ request.GET.category}} | Bon Savon - CI">
+    <meta property="og:title" content="Articles pour tout type de peau et tout âge | Bon Savon - CI">
     <meta property="og:url" content="{{ current_site }}{{ request.path }}">
     <meta property="og:description" content="">
     <meta property="og:image" content="{% static 'assets/images/logo.png' %}">
@@ -23,7 +23,7 @@
 
 
 {% block title %}
-        Catégories {{ request.GET.category}} | Bon Savon - CI
+        Articles pour tout type de peau et tout âge | Bon Savon - CI
 {% endblock title %}
 
 {% block extra_head %}{% endblock extra_head %}
@@ -35,26 +35,24 @@
 
 {% block content %}
 
-	<!-- Featured Section Begin -->
+    <!-- Featured Section Begin -->
     <section class="featured spad">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <h2>Catalogués</h2>
+                        <h2>Catalogue</h2>
                     </div>
                     <div class="featured__controls">
                         <ul>
-                            <li class="active" data-filter="*">Tout</li>
-                            <li data-filter=".men">Hommes</li>
-                            <li data-filter=".women">Femmes</li>
-                            <li data-filter=".children">Enfants</li>
+                            <li class="active" data-filter=".{{ item.type }}">Pour tout type de peau et tout âge</li>
                         </ul>
                     </div>
                 </div>
             </div>
+            
+            {% if items %}
             <div class="row featured__filter">
-                
                 {% for item in items %}
                 <div class="col-lg-3 col-md-4 col-sm-6 mix {{ item.type }}">
                     <div class="featured__item">
@@ -102,8 +100,21 @@
                     </div>
                 </div>
                 {% endfor %}
-                
             </div>
+
+            {% else %}
+            <div class="row">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-6 col-md-6 col-sm-6 mix">
+                    <div class="text-center">
+                        <p>
+                            Pour l'instant, il n'y a aucun article pour ce catalogue.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
         </div>
     </section>
     <!-- Featured Section End -->
@@ -113,4 +124,3 @@
 {% if not items %}
 	{% block footer %}{% endblock footer %}
 {% endif %}
-

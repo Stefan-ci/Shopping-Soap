@@ -8,8 +8,9 @@ from orders.models import Order, OrderItem
 
 
 class OrderAdmin(ImportExportModelAdmin):
-    list_display = ['user', 'unique_code', 'shipping_city', 'shipping_phonenumber',
-        'ordered', 'coupon', 'being_delivered', 'received', 'start_date']
+    list_display = ['unique_code', 'user', 'shipping_city', 'shipping_phonenumber',
+        'ordered', 'order_total', 'coupon', 'being_delivered', 'received', 
+        'start_date']
 
     list_filter = ['start_date', 'ordered_date', 'ordered', 
         'being_delivered', 'received', 'refund_requested', 

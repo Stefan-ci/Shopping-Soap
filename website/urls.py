@@ -1,7 +1,7 @@
 from website import views
 from django.urls import path
-from website.utils import search_soaps
 from django.contrib.auth import views as auth_views
+from website.utils import search_soaps, render_order_to_pdf_view
 
 
 
@@ -15,7 +15,15 @@ urlpatterns = [
     path('inscription/', views.RegisterView.as_view(), name='register'),
     path('profile/<str:token>/', views.user_profile_view, name='profile'),
     
-
+    
+    
+	# Categories URLs
+    path('catalogues/tout/', views.all_items_list_view, name='all-items'),
+    path('catalogues/femmes/', views.women_items_list_view, name='women-items'),
+    path('catalogues/hommes/', views.men_items_list_view, name='men-items'),
+    path('catalogues/enfants/', views.children_items_list_view, name='children-items'),
+    
+    
     
     # Items' URLs
     path('ajouter-aux-favoris/<slug:slug>/', views.add_to_favorites, name='add-to-favorites'),
@@ -47,6 +55,7 @@ urlpatterns = [
 
     
    	path('recherches/', search_soaps, name='search-items'),
+	path('commande/imprimer/pdf/<str:unique_code>/', render_order_to_pdf_view, name='render_order_to_pdf'),
    	path('newsletter/souscrire/', views.subscribe_newsletter, name='subscribe-newsletter'),
     
     
@@ -60,7 +69,7 @@ urlpatterns = [
 
 
 htmx_urlpatterns = [
-	path('cities/', views.country_cities, name="country-cities")
+	path('cities/', views.country_cities, name="country-cities"),
 ]
 
 

@@ -449,6 +449,7 @@ def confirm_order_view(request):
             order.shipping_phonenumber = form.cleaned_data.get('phone_number')
             order.unique_code = create_unique_order_code()
             order.ordered_date = now
+            order.order_total = order.get_total()
             order.save()
 
             # Generating QR Code
@@ -612,6 +613,164 @@ def item_detail_view(request, slug):
     template_name = 'public/items/item_detail.html'
     return render(request, template_name, context)
 
+
+
+
+
+
+
+
+
+
+
+
+def women_items_list_view(request):
+    items_list = Soap.objects.filter(is_public=True, is_deleted=False, type="women").order_by('-id')
+    
+    paginator = Paginator(items_list, 56)
+    page = request.GET.get("page")
+    items_obj = paginator.get_page(page)
+
+    try:
+        items_list = paginator.page(page)
+    except PageNotAnInteger:
+        items_list = paginator.page(1)
+    except EmptyPage:
+        items_list = paginator.page(paginator.num_pages)
+    
+    # Searching for items/soaps
+    if 'soap' in request.GET:
+        soap = request.GET['soap']
+        return redirect(f'/recherches/?soap={soap}')
+
+    context = {
+        'items' : items_obj,
+        'current_site' : get_current_site(request),
+    }
+
+    for item in items_obj:
+        update_views(request, item)
+        
+    context = {
+        'items' : items_obj,
+        'current_site' : get_current_site(request),
+    }
+    template_name = 'public/items/catalogs/women.html'
+    return render(request, template_name, context)
+
+
+
+
+
+
+def men_items_list_view(request):
+    items_list = Soap.objects.filter(is_public=True, is_deleted=False, type="men").order_by('-id')
+    
+    paginator = Paginator(items_list, 56)
+    page = request.GET.get("page")
+    items_obj = paginator.get_page(page)
+
+    try:
+        items_list = paginator.page(page)
+    except PageNotAnInteger:
+        items_list = paginator.page(1)
+    except EmptyPage:
+        items_list = paginator.page(paginator.num_pages)
+    
+    # Searching for items/soaps
+    if 'soap' in request.GET:
+        soap = request.GET['soap']
+        return redirect(f'/recherches/?soap={soap}')
+
+    context = {
+        'items' : items_obj,
+        'current_site' : get_current_site(request),
+    }
+
+    for item in items_obj:
+        update_views(request, item)
+        
+    context = {}
+    template_name = 'public/items/catalogs/men.html'
+    return render(request, template_name, context)
+
+
+
+
+
+
+
+def all_items_list_view(request):
+    items_list = Soap.objects.filter(is_public=True, is_deleted=False, type="all").order_by('-id')
+    
+    paginator = Paginator(items_list, 56)
+    page = request.GET.get("page")
+    items_obj = paginator.get_page(page)
+
+    try:
+        items_list = paginator.page(page)
+    except PageNotAnInteger:
+        items_list = paginator.page(1)
+    except EmptyPage:
+        items_list = paginator.page(paginator.num_pages)
+    
+    # Searching for items/soaps
+    if 'soap' in request.GET:
+        soap = request.GET['soap']
+        return redirect(f'/recherches/?soap={soap}')
+
+    context = {
+        'items' : items_obj,
+        'current_site' : get_current_site(request),
+    }
+
+    for item in items_obj:
+        update_views(request, item)
+        
+    context = {}
+    template_name = 'public/items/catalogs/all.html'
+    return render(request, template_name, context)
+        
+
+
+
+
+
+
+
+
+
+
+def children_items_list_view(request):
+    items_list = Soap.objects.filter(is_public=True, is_deleted=False, type="children").order_by('-id')
+    
+    paginator = Paginator(items_list, 56)
+    page = request.GET.get("page")
+    items_obj = paginator.get_page(page)
+
+    try:
+        items_list = paginator.page(page)
+    except PageNotAnInteger:
+        items_list = paginator.page(1)
+    except EmptyPage:
+        items_list = paginator.page(paginator.num_pages)
+    
+    # Searching for items/soaps
+    if 'soap' in request.GET:
+        soap = request.GET['soap']
+        return redirect(f'/recherches/?soap={soap}')
+
+    context = {
+        'items' : items_obj,
+        'current_site' : get_current_site(request),
+    }
+
+    for item in items_obj:
+        update_views(request, item)
+        
+    context = {}
+    template_name = 'public/items/catalogs/children.html'
+    return render(request, template_name, context)
 
 
 
@@ -1104,16 +1263,18 @@ class RegisterView(FormView):
 
 @login_required(login_url='login')
 def user_profile_view(request, token):
+    completed_orders = Order.objects.filter(user=request.user, ordered=True).order_by('-ordered_date')
     token = request.user.profile.unique_token
     token = token
-
     context = {
-        'token': token,
+        'completed_orders':completed_orders,
         'current_site': get_current_site(request)
     }
-    
     template_name = 'public/accounts/profile.html'
     return render(request, template_name, context)
+
+
+
 
 
 
@@ -1123,12 +1284,10 @@ def user_profile_view(request, token):
 @login_required(login_url='login')
 def favourites_list_view(request):
     items = request.user.profile.favorite_items.all()
-
     context = {
         'items': items,
         'current_site': get_current_site(request)
     }
-    
     template_name = 'public/items/favourites.html'
     return render(request, template_name, context)
 

@@ -1,0 +1,134 @@
+{% extends 'public/includes/base.html' %}
+
+{% load static %}
+
+{% block seo %}
+    <meta name="keywords" content="">
+    <meta name="title" content="Mon profil | Bon Savon - CI">
+    <meta name="locale" content="fr_CI">
+    <meta name="description" content="">
+    <meta property="og:title" content="Mon profil | Bon Savon - CI">
+    <meta property="og:url" content="{{ current_site }}{{ request.path }}">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="{% static 'assets/images/logo.png' %}">
+    <meta property="og:type" content="Site internet">
+    <meta property="og:locale" content="fr_CI">
+    <meta property="og:site_name" content="">
+{% endblock seo %}
+
+
+{% block title %}
+        Mon profil | Bon Savon - CI
+{% endblock title %}
+
+{% block extra_head %}{% endblock extra_head %}
+
+
+
+
+
+
+{% block content %}
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="{% static 'assets/images/breadcrumb.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Mon profil</h2>
+                        <div class="breadcrumb__option">
+                            <a href="{% url 'home' %}">Accueil</a>
+                            <a href="{% url 'user-cart' %}">Panier</a>
+                            <span>Mon profil</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+
+
+    <section class="checkout spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h6>
+                        <span class="icon_tag_alt"></span> 
+                        Veuillez noter que les articles disponibles dans votre
+                        panier ne sont pas pris en compte.
+                        Il faudrait d'abord valider cette commande avant de le voir
+                        apparaître ici.
+                        <a href="{% url 'user-cart' %}">Cliquez ici</a> 
+                        pour voir votre panier.
+                    </h6>
+                </div>
+            </div>
+            <div class="checkout__form">
+                <h4>Mes commandes</h4>
+                <div class="row">
+                    {% if not completed_orders %}
+                    <div class="col-lg-4 col-md-4"></div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="text-center">
+                            Vous n'avez effectué aucune commande pour l'instant !
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% for order in completed_orders %}
+                    <div class="col-lg-4 col-md-6">
+                        <div class="checkout__order">
+                            <h4>
+                                {{ order.unique_code }} 
+                            </h4>
+                            <div class="checkout__order__products">
+                                Articles 
+                                <span>Total</span>
+                            </div>
+                            <ul>
+                                {% for order_item in order.items.all %}
+                                <li>
+                                    <b>{{ order_item.quantity }}</b> x 
+                                    <a href="{{ order_item.item.get_absolute_url }}" class="text-dark">
+                                        {{ order_item.item.name }}
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% if order.coupon %}
+                            <div class="checkout__order__subtotal">
+                                Coupon 
+                                <span>
+                                    - {{ order.coupon.amount }} fcfa
+                                </span>
+                            </div>
+                            {% endif %}
+                            <div class="checkout__order__total">
+                                Total TTC
+                                <span>
+                                    {{ order.order_total }} FCFA
+                                </span>
+                            </div>
+                            
+                            <p>
+                                Veuillez noter que les frais de livraison s'appliqueront en 
+                                fonction de vos choix (là où vous voulez vous faire livrer).
+                                magna aliqua.
+                            </p>
+                            <a class="site-btn" href="{% url 'render_order_to_pdf' order.unique_code %}">
+                                Imprimer la fiche
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+{% endblock content %}

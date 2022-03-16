@@ -83,12 +83,12 @@ class Soap(models.Model):
         verbose_name="Prix de réduction (rabais)")
     category = models.ForeignKey('Category', on_delete=models.DO_NOTHING,
         verbose_name="Catégorie de l'article")
-    type = models.CharField(max_length=12, default="all", blank=True, null=True,
+    type = models.CharField(max_length=12, default=TYPE_CHOICES[0], blank=True, null=True,
         choices=TYPE_CHOICES, verbose_name="Type de personne")
     shipping_duration = models.IntegerField(default=1, verbose_name="Délai de livraison (Jours)")
 
     is_popular = models.BooleanField(default=False, verbose_name="Populaire ?")
-    is_available = models.CharField(max_length=20, default="Disponible",
+    is_available = models.CharField(max_length=20, default=STOCK_CHOICES[1],
         choices=STOCK_CHOICES, verbose_name="Disponibilité")
     is_public = models.BooleanField(default=True, 
         verbose_name="Visible par le public ?")

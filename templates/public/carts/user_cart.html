@@ -47,122 +47,156 @@
         </div>
     </section>
     <!-- Breadcrumb Section End -->
-
+    
+    
+    
 
     <!-- Shoping Cart Section Begin -->
     <section class="shoping-cart spad">
         <div class="container">
+            {% if not order %}
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="shoping__cart__table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th class="shoping__product">
-                                        Article
-                                    </th>
-                                    <th>Prix par unité</th>
-                                    <th>Total</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                {% for order_item in order.items.all %}
-                                <tr>
-                                    <td class="shoping__cart__item">
-                                        <img src="{{ order_item.item.picture.url }}" alt="" height="100" width="100">
-                                        <h5>
-                                            <a href="{{ order_item.item.get_absolute_url }}">
-                                                {{ order_item.item.name }}
-                                            </a>
-                                            (x {{ order_item.quantity }})
-                                        </h5>
-                                    </td>
-                                    
-                                    <td class="shoping__cart__price">
-                                        {{ order_item.item.get_price }}
-                                    </td>
-                                    
-                                    <td class="shoping__cart__total">
-                                        {% if order_item.item.discount_price %}
-                                        {{ order_item.get_total_discount_item_price }} f
-                                        <span class="ml-2 badge badge-primary">
-                                            - {{ order_item.get_amount_saved }} f
-                                        </span>
-                                        {% else %}
-                                        {{ order_item.get_total_item_price }} f
-                                        {% endif %}
-                                    </td>
-                                    
-                                    <td class="shoping__cart__item__close">
-                                        <a href="{% url 'remove-single-item-from-cart' order_item.item.slug %}">
-                                            <span class="icon_close"></span>
-                                        </a>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                                
-                            </tbody>
-                        </table>
+                <div class="col-lg-3 col-md-3"></div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="text-center">
+                        Votre panier es vide pour l'instant !
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12">
+
+            <div class="row pt-5">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-8">
                     <div class="shoping__cart__btns">
                         <a href="{% url 'item-list' %}" class="primary-btn cart-btn">
-                            Continuer mes achats
+                            Commencer mes achats
                         </a>
-                        <a href="{% url 'checkout' %}" class="primary-btn cart-btn cart-btn-right">
-                            <span class="icon_loading"></span>
-                            Procéder à la vérification
+                        <a href="{% url 'favourites' %}" class="primary-btn cart-btn cart-btn-right">
+                            <span class="fa fa-heart"></span>
+                            Mes articles favoris
                         </a>
                     </div>
                 </div>
-                {% if not order.coupon %}
-                <div class="col-lg-6">
-                    <div class="shoping__continue">
-                        <div class="shoping__discount">
-                            <h5>Code de reduction</h5>
-                            <form method="POST" action="#">
-                                {% csrf_token %}
-                                <input type="text" placeholder="Entrez votre code de promotion" required="true">
-                                <button type="submit" class="site-btn">
-                                    AJOUTER COUPON
-                                </button>
-                            </form>
+            </div>
+            {% else %}
+            <div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="shoping__cart__table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="shoping__product">
+                                            Article
+                                        </th>
+                                        <th>Prix par unité</th>
+                                        <th>Total</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    {% for order_item in order.items.all %}
+                                    <tr>
+                                        <td class="shoping__cart__item">
+                                            <img src="{{ order_item.item.picture.url }}" alt="" height="100" width="100">
+                                            <h5>
+                                                <a href="{{ order_item.item.get_absolute_url }}">
+                                                    {{ order_item.item.name }}
+                                                </a>
+                                                (x {{ order_item.quantity }})
+                                            </h5>
+                                        </td>
+                                        
+                                        <td class="shoping__cart__price">
+                                            {{ order_item.item.get_price }}
+                                        </td>
+                                        
+                                        <td class="shoping__cart__total">
+                                            {% if order_item.item.discount_price %}
+                                            {{ order_item.get_total_discount_item_price }} f
+                                            <span class="ml-2 badge badge-primary">
+                                                - {{ order_item.get_amount_saved }} f
+                                            </span>
+                                            {% else %}
+                                            {{ order_item.get_total_item_price }} f
+                                            {% endif %}
+                                        </td>
+                                        
+                                        <td class="shoping__cart__item__close">
+                                            <a href="{% url 'remove-single-item-from-cart' order_item.item.slug %}">
+                                                <span class="icon_close"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-                {% endif %}
-                <div class="col-lg-6">
-                    <div class="shoping__checkout">
-                        <h5 class="text-uppercase">Aperçu du panier</h5>
-                        <ul>
-                            {% if order.coupon %}
-                            <li>
-                                Coupon
-                                <span class="text-success">
-                                    -{{ order.coupon.amount }} FCFA
-                                </span>
-                            </li>
-                            {% endif %}
-                            <li>
-                                Total TTC
-                                <span>
-                                    {{ order.get_total }} FCFA
-                                </span>
-                            </li>
-                        </ul>
-                        <a href="{% url 'checkout' %}" class="primary-btn">
-                            Procéder à la vérification
-                        </a>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="shoping__cart__btns">
+                            <a href="{% url 'item-list' %}" class="primary-btn cart-btn">
+                                Continuer mes achats
+                            </a>
+                            <a href="{% url 'checkout' %}" class="primary-btn cart-btn cart-btn-right">
+                                <span class="icon_loading"></span>
+                                Procéder à la vérification
+                            </a>
+                        </div>
+                    </div>
+                    {% if not order.coupon %}
+                    <div class="col-lg-6">
+                        <div class="shoping__continue">
+                            <div class="shoping__discount">
+                                <h5>Code de reduction</h5>
+                                <form method="POST" action="#">
+                                    {% csrf_token %}
+                                    <input type="text" placeholder="Entrez votre code de promotion" required="true">
+                                    <button type="submit" class="site-btn">
+                                        AJOUTER COUPON
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="col-lg-6">
+                        <div class="shoping__checkout">
+                            <h5 class="text-uppercase">Aperçu du panier</h5>
+                            <ul>
+                                {% if order.coupon %}
+                                <li>
+                                    Coupon
+                                    <span class="text-success">
+                                        -{{ order.coupon.amount }} FCFA
+                                    </span>
+                                </li>
+                                {% endif %}
+                                <li>
+                                    Total TTC
+                                    <span>
+                                        {{ order.get_total }} FCFA
+                                    </span>
+                                </li>
+                            </ul>
+                            <a href="{% url 'checkout' %}" class="primary-btn">
+                                Procéder à la vérification
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
     </section>
     <!-- Shoping Cart Section End -->
 
 {% endblock content %}
+
+{% if not order %}
+    {% block footer %}{% endblock footer %}
+{% endif %}

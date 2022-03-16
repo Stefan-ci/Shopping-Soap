@@ -109,3 +109,7 @@
     <!-- Featured Section End -->
 
 {% endblock content %}
+
+{% if not items %}
+	{% block footer %}{% endblock footer %}
+{% endif %}

@@ -87,6 +87,8 @@ class Order(models.Model):
         verbose_name="Frais de livraison")
     coupon = models.ForeignKey(Coupon, on_delete=models.DO_NOTHING, 
         blank=True, null=True)
+    order_total = models.BigIntegerField(null=True, blank=True, 
+        verbose_name="Total TTC")
     
     being_delivered = models.BooleanField(default=False, 
         verbose_name="En cours de livraison")
@@ -127,6 +129,7 @@ class Order(models.Model):
             total += order_item.get_total_item_price()
         if self.coupon:
             total -= self.coupon.amount
+        #self.order_total.save(total)
         return total
     
     

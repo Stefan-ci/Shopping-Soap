@@ -1,16 +1,22 @@
+import os
+from django.conf import settings
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.sites.shortcuts import get_current_site
+from django.http import HttpResponse
 from hitcount.utils import get_hitcount_model
 from hitcount.views import HitCountMixin
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
+from orders.models import Order
 from products.models import Soap
-import hashlib
-import json
+from django.contrib.auth.decorators import login_required
 import re
 import random
 import string
-
+from io import BytesIO
+from xhtml2pdf import pisa
+from html import escape
 from django.db.models import Q
+from django.template.loader import render_to_string
 
 
 def update_views(request, object):
@@ -25,16 +31,6 @@ def update_views(request, object):
         hitcontext["hitcounted"] = hit_count_response.hit_counted
         hitcontext["hit_message"] = hit_count_response.hit_message
         hitcontext["total_hits"] = hits
-
-
-
-
-def generate_user_token(request, username, date_joined):
-    hash_string = str(username) + ' ' + str(date_joined)
-    hash_encoded = json.dumps(hash_string, sort_keys=True).encode()
-    token = hashlib.sha256(hash_encoded).hexdigest()
-    return token
-
 
 
 
@@ -102,7 +98,7 @@ def search_soaps(request):
 
 
 def create_unique_order_code():
-    code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=20))
+    code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=17))
     return code
 
 
@@ -112,3 +108,40 @@ def is_valid_form(values):
 		if field == '':
 			valid = False
 	return valid
+
+
+
+
+
+
+def fetch_pdf_data(uri, rel):
+    path = os.path.join(
+        settings.MEDIA_ROOT,
+        uri.replace(settings.MEDIA_URL, '')
+    )
+    return path
+
+
+
+@login_required(login_url='login')
+def render_order_to_pdf_view(request, unique_code):
+    order = get_object_or_404(Order, unique_code=unique_code)
+    context = {
+        'order': order,
+    }
+    template = 'public/includes/partials/render_order_to_pdf.html'
+    html = render_to_string(template, context=context)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), dest=result, link_callback=fetch_pdf_data)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return HttpResponse("""
+        Erreur de chargement du document PDF
+        <pre>
+            %s
+        </pre>
+    """ % escape(html))
+    
+    
+    
+    
