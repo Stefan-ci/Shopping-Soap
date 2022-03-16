@@ -1,0 +1,167 @@
+{% extends 'public/includes/base.html' %}
+
+{% load static %}
+
+{% block seo %}
+    <meta name="keywords" content="{% for tag in post.tags.all %}{{tag}},{% endfor %}">
+    <meta name="title" content="{{ post.title|safe }} | Bon Savon - CI">
+    <meta name="locale" content="fr_CI">
+    <meta name="description" content="{{ post.description|safe|truncatechars:154 }}">
+    <meta property="og:title" content="{{ post.title|safe }} | Bon Savon - CI">
+    <meta property="og:url" content="{{ current_site }}{{ request.path }}">
+    <meta property="og:description" content="{{ post.description|safe|truncatechars:154 }}">
+    <meta property="og:image" content="{{ post.picture.url }}">
+    <meta property="og:type" content="Site internet">
+    <meta property="og:locale" content="fr_CI">
+    <meta property="og:site_name" content="">
+{% endblock seo %}
+
+
+{% block title %}
+        Blog - {{ post.title|safe }} | Bon Savon - CI
+{% endblock title %}
+
+{% block extra_head %}{% endblock extra_head %}
+
+
+
+
+
+
+{% block content %}
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="{% static 'assets/images/breadcrumb.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>{{ post.title|safe }}</h2>
+                        <div class="breadcrumb__option">
+                            <a href="{% url 'home' %}">Accueil</a>
+                            <a href="{% url 'blog:posts' %}">Blog</a>
+                            <span>{{ post.title|safe }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+
+
+    <!-- Blog Details Section Begin -->
+    <section class="blog-details spad">
+        <div class="container">
+            <div class="row">
+                {% if recent_posts %}
+                
+                <div class="col-lg-4 col-md-5 order-md-1 order-2">
+                    <div class="blog__sidebar">
+                        <div class="blog__sidebar__item">
+                            <h4>Postes récents</h4>
+                            <div class="blog__sidebar__recent">
+                                {% for recent_post in recent_posts %}
+                                <a href="{{ recent_post.get_absolute_url }}" class="blog__sidebar__recent__item">
+                                    <div class="blog__sidebar__recent__item__pic">
+                                        <img src="{{ recent_post.picture.url }}" alt="" height="70" width="70">
+                                    </div>
+                                    <div class="blog__sidebar__recent__item__text">
+                                        <h6>
+                                            {{ recent_post.title|truncatechars:50 }}
+                                        </h6>
+                                        <span>MAR 05, 2019</span>
+                                    </div>
+                                </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="col-lg-8 col-md-7 order-md-1 order-1">
+                    <div class="blog__details__text">
+                        <img src="{{ post.picture.url }}" alt="{{ post.name|safe }}">
+                        <p>
+                            {{ post.description|safe }}
+                        </p>
+                        
+                    </div>
+                    <div class="blog__details__content">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="blog__details__widget">
+                                    <ul>
+                                        <li>
+                                            <span>Tags:</span> - 
+                                            {% for tag in post.tags.all %}
+                                            {{tag}} - 
+                                            {% endfor %}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Blog Details Section End -->
+
+
+    {% if similar_posts %}
+    <!-- Related Blog Section Begin -->
+    <section class="related-blog spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title related-blog-title">
+                        <h2>
+                            Pouuraient vous intéresser
+                        </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% for similar_post in similar_posts %}
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <div class="blog__item">
+                        <div class="blog__item__pic">
+                            <img src="{{ similar_post.picture.url }}" alt="">
+                        </div>
+                        <div class="blog__item__text">
+                            <ul>
+                                <li>
+                                    <i class="fa fa-calendar-o"></i> 
+                                    <span class="text-capitalize">
+                                        {{ post.date|date:"F" }}
+                                    </span>,
+                                    {{ post.date|date:"Y" }}
+                                </li>
+                                <li>
+                                    <i class="fa fa-comment-o"></i>
+                                    {{ similar_post.blog_comments_count }}
+                                </li>
+                            </ul>
+                            <h5>
+                                <a href="{{ similar_post.get_absolute_url }}">
+                                    {{ similar_post.title|safe }}
+                                </a>
+                            </h5>
+                            <p>
+                                {{ similar_post.description|safe|truncatechars:80 }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}                
+            </div>
+        </div>
+    </section>
+    <!-- Related Blog Section End -->
+    {% endif %}
+
+    
+{% endblock content %}
