@@ -34,7 +34,7 @@
 				{% if request.user.is_authenticated %}
 				<a href="{% url 'profile' request.user.profile.unique_token %}">
 					<i class="fa fa-user"></i>
-					Mon compte
+					Mon profil
 				</a>
 				{% else %}
 				<a href="{% url 'login' %}">
@@ -59,7 +59,7 @@
 
 				{% if request.user.is_authenticated %}
 				<li>
-					<a href="#">Panier</a>
+					<a href="#">Mon Compte</a>
 					<ul class="header__menu__dropdown">
 						<li class="{% if request.path_info == '/panier/' %}active{% endif %}">
 							<a href="{% url 'user-cart' %}">
@@ -155,7 +155,7 @@
 								{% if request.user.is_authenticated %}
                                 <a href="{% url 'profile' request.user.profile.unique_token %}">
 									<i class="fa fa-user"></i>
-									Mon compte
+									Mon profil
 								</a>
 								{% else %}
 								<a href="{% url 'login' %}">
@@ -194,7 +194,7 @@
 
 							{% if request.user.is_authenticated %}
                             <li>
-								<a href="#">Panier</a>
+								<a href="#">Mon Compte</a>
                                 <ul class="header__menu__dropdown">
                                     <li class="{% if request.path_info == '/panier/' %}active{% endif %}">
 										<a href="{% url 'user-cart' %}">
