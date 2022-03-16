@@ -59,7 +59,7 @@
 
 				{% if request.user.is_authenticated %}
 				<li>
-					<a href="#">Mon Compte</a>
+					<a href="#">Compte</a>
 					<ul class="header__menu__dropdown">
 						<li class="{% if request.path_info == '/panier/' %}active{% endif %}">
 							<a href="{% url 'user-cart' %}">
@@ -194,7 +194,7 @@
 
 							{% if request.user.is_authenticated %}
                             <li>
-								<a href="#">Mon Compte</a>
+								<a href="#">Compte</a>
                                 <ul class="header__menu__dropdown">
                                     <li class="{% if request.path_info == '/panier/' %}active{% endif %}">
 										<a href="{% url 'user-cart' %}">
