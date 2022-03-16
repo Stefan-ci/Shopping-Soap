@@ -50,7 +50,8 @@ urlpatterns = [
 
 	# Support URLs
     path('a-propos/', views.about_view, name='about'),
-    path('support/', views.support_view, name='support'),
+    path('faqs/', views.faqs_view, name='faqs'),
+    path('faqs/<str:slug>/', views.faq_detail_view, name='faq'),
     path('contactez-nous/', views.contact_view, name='contact'),
 
     

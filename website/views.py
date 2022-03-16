@@ -21,6 +21,7 @@ from django.views.decorators.csrf import csrf_protect
 import geocoder
 import socket
 
+from faqs.models import FAQ
 from products.models import Soap, Category
 from orders.models import Order, OrderItem
 from coupons.models import Coupon
@@ -1321,12 +1322,38 @@ def about_view(request):
 
 
 
-def support_view(request):
+def faqs_view(request):
+    faqs = FAQ.objects.filter(is_public=True)[:20]
     context = {
+        'faqs': faqs,
         'current_site': get_current_site(request),
     }
-    template_name = 'public/support/support.html'
+    template_name = 'public/support/faqs.html'
     return render(request, template_name, context)
+
+
+
+
+
+def faq_detail_view(request, slug):
+    faqs = FAQ.objects.filter(is_public=True)[:20]
+    try:
+        faq = get_object_or_404(faqs, slug=slug)
+    except FAQ.DoesNotExist:
+        messages.error(request, "Aucun FAQ ne correspond au detail fourni")
+        return redirect('faqs')
+    except:
+        faq = None
+    context = {
+        'faq': faq,
+        'current_site': get_current_site(request),
+    }
+    template_name = 'public/support/faq_detail.html'
+    return render(request, template_name, context)
+
+
+
+
 
 
 

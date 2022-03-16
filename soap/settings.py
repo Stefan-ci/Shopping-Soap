@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'address.apps.AddressConfig',
     'contacts.apps.ContactsConfig',
     'coupons.apps.CouponsConfig',
+    'faqs.apps.FaqsConfig',
     'newsletter.apps.NewsletterConfig',
     'orders.apps.OrdersConfig',
     'products.apps.ProductsConfig',
