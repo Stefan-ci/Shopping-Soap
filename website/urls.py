@@ -43,7 +43,6 @@ urlpatterns = [
 	path('panier/', views.user_cart_view, name='user-cart'),
  	path('verifier/commande/', views.checkout_view, name='checkout'),
    	path('confirmer/commande/', views.confirm_order_view, name='confirm-order'),
-	path('ajouter/un-coupon/', views.AddCouponView.as_view(), name='add-coupon'),
 	path('requete/remboursement/', views.RequestRefundView.as_view(), name='request-refund'),
 
 

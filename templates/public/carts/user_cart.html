@@ -148,22 +148,24 @@
                             </a>
                         </div>
                     </div>
+                    
                     {% if not order.coupon %}
                     <div class="col-lg-6">
                         <div class="shoping__continue">
                             <div class="shoping__discount">
                                 <h5>Code de reduction</h5>
-                                <form method="POST" action="#">
+                                <form method="POST" action="{% url 'user-cart' %}">
                                     {% csrf_token %}
-                                    <input type="text" placeholder="Entrez votre code de promotion" required="true">
+                                    {{ form.code }}
                                     <button type="submit" class="site-btn">
-                                        AJOUTER COUPON
+                                        AJOUTER UN COUPON
                                     </button>
                                 </form>
                             </div>
                         </div>
                     </div>
                     {% endif %}
+
                     <div class="col-lg-6">
                         <div class="shoping__checkout">
                             <h5 class="text-uppercase">Aperçu du panier</h5>

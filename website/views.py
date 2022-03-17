@@ -4,7 +4,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.generic import View
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import EmailMessage
@@ -100,13 +100,60 @@ def home_view(request):
 
 @login_required(login_url='login')
 def user_cart_view(request):
+    form = CouponForm
     completed_orders = Order.objects.filter(user=request.user, ordered=True)
     try:
         order = Order.objects.get(user=request.user, ordered=False) or None
     except:
         order = None
         messages.warning(request, "Votre panier est vide actuellement")
+    
+    if request.method == 'POST':
+        form = CouponForm(request.POST)
+        if form.is_valid():
+            code = request.POST['code']
+            try:
+                coupon = Coupon.objects.get(code=code)
+                if coupon.is_active:
+                    if coupon.user:
+                        if request.user == coupon.user:
+                            order.coupon = coupon
+                            order.save()
+                            messages.success(
+                                request, "Coupon ajouté avec succès.")
+                            return redirect('user-cart')
+
+                        else:  # if not request.user == coupon.user
+                            messages.error(
+                                request, "Ce coupon ne vous ai pas destiné.")
+                            return redirect('user-cart')
+                    
+                    else:  # if not coupon.user means everyone can use it.
+                        order.coupon = coupon
+                        order.save()
+                        messages.success(
+                            request, "Coupon ajouté avec succès.")
+                        return redirect('user-cart')
+
+                else:  # if not coupon.is_active
+                    messages.warning(request, """
+                        Désolé, ce coupon n'est plus valide.
+                    """)
+                    return redirect('user-cart')
+            
+            except Coupon.DoesNotExist: # if not coupon
+                messages.error(request, """
+                        Désolé, code coupon invalide !
+                        Assurez-vous de bien saisir votre code promotion
+                        tout en verifiant doublement.
+                    """)
+                return reverse('user-cart')
+            
+        else: #if request.method != 'POST':
+            form = CouponForm()
+            
     context = {
+        'form' : form,
         'order' : order,
         'completed_orders': completed_orders,
         'current_site' : get_current_site(request),
@@ -121,148 +168,9 @@ def user_cart_view(request):
 ############################################################
 """
 	Coupon & Refund Requests views:
-		* Add coupon
-		* Get registered coupon
         * Refund request
 """
 ############################################################
-def get_coupon(request, code):
-    try:
-        coupon = Coupon.objects.get(code=code) or None
-        if coupon.is_active:
-            return coupon
-        else:
-            messages.warning(
-                request, f"""
-                    Désolé, le coupon avec le code '{coupon.code}' 
-                    n'est plus actif.
-                """)
-            return redirect("checkout")
-    except ObjectDoesNotExist:
-        messages.warning(request, "Désolé, ce coupon n'existe pas.")
-        return redirect("checkout")
-    except:
-        messages.error(request, """
-            Désolé, il semble que ce coupon ait déjà été utilisé. 
-            Essayez un autre si vous en avez.
-        """)
-        return redirect("user-cart")
-
-
-
-
-
-
-
-
-class AddCouponView(View):
-    @method_decorator(login_required(login_url='login'))
-    def dispatch(self, request, *args, **kwargs):
-        return super(AddCouponView, self).dispatch(request, *args, **kwargs)
-
-
-    def post(self, *args, **kwargs):
-        form = CouponForm(self.request.POST or None)
-        if form.is_valid():
-            try:
-                code = form.cleaned_data.get('code')
-                order = Order.objects.get(
-                    user=self.request.user,
-                    ordered=False
-                )
-
-                coupon = Coupon.objects.get(code=code)
-                if coupon.is_active:
-                    if coupon.user:
-                        if self.request.user == coupon.user:
-                            order.coupon = get_coupon(self.request, code)
-                            order.save()
-                            messages.success(
-                                self.request, "Coupon ajouté avec succès.")
-                            return redirect('checkout')
-
-                        else:  # if not request.user == coupon.user
-                            messages.error(
-                                self.request, "Ce coupon ne vous ai pas destiné.")
-                            return redirect('checkout')
-                    else:  # if not coupon.user
-                        order.coupon = get_coupon(self.request, code)
-                        order.save()
-                        messages.success(
-                            self.request, "Coupon ajouté avec succès.")
-                        return redirect('checkout')
-
-                else:  # if not coupon.is_active
-                    messages.success(self.request, """
-                        Désolé, ce coupon n'est plus valide.
-                    """)
-                    return redirect('checkout')
-
-            except ObjectDoesNotExist:
-                messages.error(self.request, "Désolé, votre panier est vide")
-                return redirect("item-list")
-
-
-
-
-
-
-@login_required(login_url='login')
-def add_coupon_view(request):
-    form = CouponForm
-    if request.method == 'POST':
-        form = CouponForm(request.POST or None)
-        if form.is_valid():
-            try:
-                code = form.cleaned_data.get('code')
-                order = Order.objects.get(
-                    user=request.user,
-                    ordered=False
-                )
-
-                coupon = Coupon.objects.get(code=code)
-                if coupon.is_active:
-                    if coupon.user:
-                        if request.user == coupon.user:
-                            order.coupon = get_coupon(request, code)
-                            order.save()
-                            messages.success(
-                                request, "Coupon ajouté avec succès.")
-                            return redirect('checkout')
-
-                        else:  # if not request.user == coupon.user
-                            messages.error(
-                                request, "Ce coupon ne vous ai pas destiné.")
-                            return redirect('checkout')
-                    else:  # if not coupon.user
-                        order.coupon = get_coupon(request, code)
-                        order.save()
-                        messages.success(
-                            request, "Coupon ajouté avec succès.")
-                        return redirect('checkout')
-
-                else:  # if not coupon.is_active
-                    messages.success(request, """
-                        Désolé, ce coupon n'est plus valide.
-                    """)
-                    return redirect('checkout')
-            
-            except ObjectDoesNotExist:
-                messages.warning(request, """
-                    Votre panier est vide. Désolé, veuillez sélectionner des 
-                    articles et revenez ajouter un coupon.
-                """)
-                return redirect("item-list")
-
-
-
-
-
-
-
-
-
-
 
 class RequestRefundView(View):
     @method_decorator(login_required(login_url='login'))
@@ -475,7 +383,7 @@ def confirm_order_view(request):
             # Deactivating the current coupon on order if any
             if order.coupon:
                 code = order.coupon.code
-                coupon = Coupon.objects.get(code=code)
+                coupon = get_object_or_404(Coupon, code=code)
                 coupon.is_active = False
                 coupon.used = True
                 if not coupon.end_date:
