@@ -1470,7 +1470,7 @@ def subscribe_newsletter(request):
         Newsletter.objects.get_or_create(email=email, is_subscribed=True)
         # Send email here.
         messages.success(request, """
-            Merci d'avoir souscrit à notre newsletter !
+            Merci d'avoir souscrit à la newsletter !
         """)
         return redirect('home')
 
