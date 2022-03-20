@@ -15,7 +15,7 @@ import os
 #############################################################
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = SECRET_KEY = config('SECRET_KEY')
-DEBUG = False
+DEBUG = True
 SITE_ID = 1
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'ivoire-soap.herokuapp.com']
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
