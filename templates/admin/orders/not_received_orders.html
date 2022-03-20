@@ -1,0 +1,285 @@
+{% extends 'admin/admin_includes/admin_base.html' %}
+
+{% load static %}
+{% load ratings %}
+{% load humanize %}
+{% load hitcount_tags %}
+
+
+{% block title %}
+    <title>
+        Commandes livrées mais pas encore reçues | Administration - Ivoire Bouffe 😋😋
+    </title>
+{% endblock title %}
+
+{% block extra_head %}{% endblock extra_head %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-xl-6 grid-margin stretch-card flex-column">
+            <h5 class="mb-2 text-titlecase mb-4 mt-3 text-center text-uppercase">
+                Commandes livrées mais pas encore reçues
+            </h5>
+            <div class="row h-100 mt-3">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="table-responsive pt-3">
+                            <table class="table table-striped project-orders-table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="ml-5">N°</th>
+                                        <th>Code</th>
+                                        <th>Date</th>
+                                        <th>Téléphone</th>
+                                        <th>Status</th>
+                                        <th>Valeur</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in orders %}
+                                    <tr>
+                                        {% if not order.being_delivered %}
+                                        <th class="text-danger">{{ forloop.counter }}</th>
+                                        {% endif %}
+
+                                        {% if order.being_delivered and not order.received %}
+                                        <th class="text-warning">{{ forloop.counter }}</th>
+                                        {% endif %}
+
+                                        {% if order.being_delivered and order.received %}
+                                        <th class="text-success">{{ forloop.counter }}</th>
+                                        {% endif %}
+
+                                        <td>
+                                            <a href="#" data-toggle="modal" data-target="#{{order.unique_code}}{{order.id}}">
+                                                <b>
+                                                    {{ order.unique_code }}
+                                                </b>
+                                            </a>
+                                        </td>
+                                        <td class="smaller">
+                                            {{ order.ordered_date|naturaltime }}
+                                        </td>
+                                        <td>
+                                            {{ order.shipping_phonenumber }}
+                                        </td>
+                                        <td>
+                                            {% if order.received %}
+                                            <label class="badge badge-success">
+                                                Reçue
+                                            </label>
+                                            {% endif %}
+                                            {% if order.being_delivered and not order.received %}
+                                            <label class="badge badge-warning">
+                                                Livrée
+                                            </label>
+                                            {% endif %}
+                                            {% if not order.being_delivered %}
+                                            <label class="badge badge-danger">
+                                                Non livrée
+                                            </label>
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-success">
+                                            <b>
+                                                {{ order.get_total }} FCFA
+                                            </b>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <div class="p-3">
+                                            <em>
+                                                Il n'y a pas de commande pour l'instant.
+                                                Revenez plus tard !
+                                            </em>
+                                        </div>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if orders.has_other_pages %}
+            <div class="row pt-3">
+                <div class="col-md-12 text-center">
+                    <ul class="pagination justify-content-end mb-0 text-center">
+                        
+                        {% if orders.has_previous %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="?page={{ orders.previous_page_number }}" tabindex="-1">
+                                <span>&laquo;</span>
+                                <span class="sr-only">Précédent</span>
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% for page_num in orders.paginator.page_range %}
+                        {% if orders.number == page_num %}
+                        <li class="page-item active mr-1 ml-1">
+                            <span class="page-link">
+                                {{ page_num }}
+                                <span class="sr-only">(current)</span>
+                            </span>
+                        </li>
+                        {% elif page_num > orders.number|add:'-2' and page_num < orders.number|add:'2' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                        </li>
+                        {% elif page_num > orders.number|add:'-3' and page_num < orders.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                        </li>
+                        {% elif page_num > orders.number|add:'-4' and page_num < orders.number|add:'4' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if orders.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ orders.next_page_number }}">
+                                <span>&raquo;</span>
+                                <span class="sr-only">Suivant</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+{% endblock content %}
+
+
+{% block extra_content %}
+    
+    <!-- MODALS (Orders) -->
+    {% for order in orders %}
+    <div class="modal fade" id="{{order.unique_code}}{{order.id}}" 
+        tabindex="-1" role="dialog" 
+        aria-labelledby="{{order.unique_code}}{{order.id}}"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" 
+                        id="modal-title-{{order.unique_code}}{{order.id}}">
+                        Commande | 
+                        <span class="text-info">
+                            {{order.unique_code}}
+                        </span>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="py-3">
+                        <h3 class="heading mt-2 text-center mb-3 text-underline">
+                            Détails de la commande
+                        </h3>
+                        <div>
+                            <div class="mb-2">
+                                <strong>
+                                    Utilisateur: 
+                                </strong>
+                                {{ order.user.username }}
+                            </div>
+                            <div class="mb-2">
+                                <strong>
+                                    Date de la commande:
+                                </strong>
+                                {{ order.ordered_date }}
+                            </div>
+                            <div class="mb-2">
+                                <strong>
+                                    N° de téléphone:
+                                </strong>
+                                {{ order.shipping_phonenumber }}
+                            </div>
+                            <div class="mb-2">
+                                <strong>
+                                    Ville de livraison:
+                                </strong>
+                                {{ order.shipping_city }}
+                            </div>
+                            <div class="mb-2">
+                                <strong>
+                                    Quatier de livraison:
+                                </strong>
+                                {{ order.shipping_neighborhood }}
+                            </div>
+                            <div class="mb-2">
+                                <strong>
+                                    Appartement de livraison:
+                                </strong>
+                                {{ order.shipping_appartment }}
+                            </div>
+                            <div class="mb-2">
+                                <strong>
+                                    Somme à payer à la livraison:
+                                </strong>
+                                <span class="text-success f-rem-15">
+                                    {{ order.get_total }} FCFA
+                                </span>
+                            </div>
+                            {% if order.being_delivered %}
+                            <div class="mb-2">
+                                <strong>
+                                    En cours de livraison:
+                                </strong>
+                                <span class="text-success">
+                                    OUI
+                                </span>
+                            </div>
+                            <div class="mb-2">
+                                <strong>
+                                    Commande livrée:
+                                </strong>
+                                {% if order.received %}
+                                <span class="text-success">
+                                    OUI
+                                </span>
+                                {% else %}
+                                <span class="text-danger">
+                                    NON
+                                </span>
+                                {% endif %}
+                            </div>
+                            {% else %}
+                            <div class="mb-2">
+                                <strong>
+                                    En cours de livraison:
+                                </strong>
+                                <span class="text-danger">
+                                    NON
+                                </span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <a href="{% url 'order-detail' order.id order.unique_code %}" class="btn btn-outline-info">
+                        Plus de détails
+                    </a>
+                    <button type="button" class="btn btn-danger ml-auto" data-dismiss="modal">
+                        Fermer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    {% endfor %}
+
+{% endblock extra_content %}

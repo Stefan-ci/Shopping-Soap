@@ -34,6 +34,18 @@
             --debug: #ddf509 !important;
         }
     </style>
+    <script>
+        document.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        });
+
+        function setCookie(cname, cvalue, exdays){
+            const date = new Date();
+            date.setTime(date.getTime() + (exdays*24*60*60*1000));
+            let expires = "expire_date="+date.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+    </script>
 </head>
 <body>
     
@@ -74,11 +86,7 @@
     </script>
     {% endfor %}
     {% endif %}
-    <script>
-        document.addEventListener('htmx:configRequest', (event) => {
-            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
-        });
-    </script>
+    
     {% block script %}
         {% include 'public/includes/scripts.html' %}
     {% endblock script %}

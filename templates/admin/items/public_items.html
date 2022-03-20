@@ -1,0 +1,119 @@
+{% extends 'admin/admin_includes/admin_base.html' %}
+
+{% load static %}
+{% load ratings %}
+{% load humanize %}
+{% load hitcount_tags %}
+
+
+{% block title %}
+    <title>
+        Liste des menus publics | Administration - Ivoire Bouffe 😋😋
+    </title>
+{% endblock title %}
+
+{% block extra_head %}{% endblock extra_head %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-xl-6 grid-margin stretch-card flex-column">
+            <h4 class="mb-2 text-titlecase mb-4 mt-3 text-center text-uppercase">
+                Liste des menus publics
+            </h4>
+            <div class="row">
+                {% for item in items %}
+                <div class="col-md-3 mb-1">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-img">
+                                <a href="{% url 'admin-item-detail' item.id item.slug %}" class="text-decoration-none">
+                                    <img src="{{ item.picture.url }}" alt="{{ item.name }}" 
+                                        class="img-fluid" title="{{ item.name }}">
+                                </a>
+                            </div>
+                            <h6>
+                                {% if item.is_public %}
+                                <a href="{% url 'admin-item-detail' item.id item.slug %}" class="text-decoration-none">
+                                {% else %}
+                                <a href="{% url 'admin-item-detail' item.id item.slug %}" class="text-decoration-none text-danger">
+                                {% endif %}
+                                {% if item.is_public and item.is_available == 'out_of_stock' %}
+                                <a href="{% url 'admin-item-detail' item.id item.slug %}" class="text-decoration-none text-warning">
+                                {% endif %}
+                                    {{ item.name }}
+                                </a>
+                            </h6>
+                            <p class="py-0">
+                                {{ item.price }} FCFA
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <em>
+                            Il n'y a aucun menu pour l'instant.
+                        </em>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+    {% if items.has_other_pages %}
+    <div class="row pt-3">
+        <div class="col-md-12 text-center">
+            <ul class="pagination justify-content-end mb-0 text-center">
+
+                {% if items.has_previous %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="?page={{ items.previous_page_number }}" tabindex="-1">
+                        <span>&laquo;</span>
+                        <span class="sr-only">Précédent</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for page_num in items.paginator.page_range %}
+                {% if items.number == page_num %}
+                <li class="page-item active mr-1 ml-1">
+                    <span class="page-link">
+                        {{ page_num }}
+                        <span class="sr-only">(current)</span>
+                    </span>
+                </li>
+                {% elif page_num > items.number|add:'-2' and page_num < items.number|add:'2' %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                </li>
+                {% elif page_num > items.number|add:'-3' and page_num < items.number|add:'3' %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                </li>
+                {% elif page_num > items.number|add:'-4' and page_num < items.number|add:'4' %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+
+                {% if items.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ items.next_page_number }}">
+                        <span>&raquo;</span>
+                        <span class="sr-only">Suivant</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+
+    
+{% endblock content %}

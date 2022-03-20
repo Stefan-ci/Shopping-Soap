@@ -1,0 +1,280 @@
+{% extends 'admin/admin_includes/admin_base.html' %}
+
+{% load static %}
+{% load ratings %}
+{% load humanize %}
+{% load hitcount_tags %}
+
+
+{% block title %}
+    <title>
+        Commande -{{order.unique_code}}- | Administration - Ivoire Bouffe 😋😋
+    </title>
+{% endblock title %}
+
+{% block extra_head %}{% endblock extra_head %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-xl-6 grid-margin stretch-card flex-column">
+            <div class="text-center p-3">
+                {% if not order.being_delivered %}
+                <a href="#" data-toggle="modal" data-target="#{{order.unique_code}}-deliver"
+                    class="btn btn-info mb-2">
+                    Livrer la commande
+                </a>
+                {% endif %}
+
+                {% if order.being_delivered and not order.received %}
+                <a href="javascript:;" class="btn btn-outline-warning btn-sm btn-block mb-2 smaller" disabled>
+                    En cours de livaison ...
+                </a>
+                {% endif %}
+
+                {% if not order.received %}
+                <a href="#" data-toggle="modal" data-target="#{{order.unique_code}}-receive"
+                    class="btn btn-outline-success mb-2">
+                    Marquer comme reçue
+                </a>
+                {% else %}
+                <a href="javascript:;" class="btn btn-success btn-sm btn-block mb-2 smaller" disabled>
+                    Livrée et reçue, merci 😋😋
+                </a>
+                {% endif %}
+            </div>
+            <h4 class="mb-2 text-titlecase mb-4 mt-3 text-center">
+                Détails de la commande 
+                <span class="text-info">
+                    {{ order.unique_code }}
+                </span>
+            </h4>
+
+            <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <div class="py-3">
+                                <div class="mb-2">
+                                    <strong>
+                                        Utilisateur:
+                                    </strong>
+                                    {{ order.user.username }}
+                                </div>
+                                <div class="mb-2">
+                                    <strong>
+                                        Date de la commande:
+                                    </strong>
+                                    {{ order.ordered_date }}
+                                </div>
+                                <div class="mb-2">
+                                    <strong>
+                                        N° de téléphone:
+                                    </strong>
+                                    {{ order.shipping_phonenumber }}
+                                </div>
+                                <div class="mb-2">
+                                    <strong>
+                                        Ville de livraison:
+                                    </strong>
+                                    {{ order.shipping_city }}
+                                </div>
+                                <div class="mb-2">
+                                    <strong>
+                                        Quatier de livraison:
+                                    </strong>
+                                    {{ order.shipping_neighborhood }}
+                                </div>
+                                <div class="mb-2">
+                                    <strong>
+                                        Appartement de livraison:
+                                    </strong>
+                                    {{ order.shipping_appartment }}
+                                </div>
+                                <div class="mb-2">
+                                    <strong>
+                                        Somme à payer à la livraison:
+                                    </strong>
+                                    <span class="text-success f-rem-15">
+                                        {{ order.get_total }} FCFA
+                                    </span>
+                                </div>
+                                {% if order.being_delivered %}
+                                <div class="mb-2">
+                                    <strong>
+                                        En cours de livraison:
+                                    </strong>
+                                    <span class="text-success">
+                                        OUI
+                                    </span>
+                                </div>
+                                <div class="mb-2">
+                                    <strong>
+                                        Commande livrée et reçue:
+                                    </strong>
+                                    {% if order.received %}
+                                    <span class="text-success">
+                                        OUI
+                                    </span>
+                                    {% else %}
+                                    <span class="text-danger">
+                                        NON
+                                    </span>
+                                    {% endif %}
+                                </div>
+                                {% else %}
+                                <div class="mb-2">
+                                    <strong>
+                                        En cours de livraison:
+                                    </strong>
+                                    <span class="text-danger">
+                                        NON
+                                    </span>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <div class="py-3">
+                                <h5 class="text-muted">
+                                    Menus commandés:
+                                </h5>
+                                <ul class="list-group mb-3 z-depth-1">
+                                    {% for item in order.items.all %}
+                                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                        <div>
+                                            <p class="my-0">
+                                                <strong class="text-danger">{{ item.quantity }} </strong>
+                                                x 
+                                                <span>{{ item.item.name}}</span>
+                                            </p>
+                                            <p class="my-0">
+                                                <img src="{{ item.item.picture.url }}" alt="{{ item.item.name }}"
+                                                    title="{{ item.item.name }}" class="img-fluid"
+                                                    height="200" width="200">
+                                            </p>
+                                        </div>
+                                        <b class="text-muted">{{ item.get_final_price }} fcfa</b>
+                                    </li>
+                                    {% endfor %}
+
+                                    {% if order.coupon %}
+                                    <li class="list-group-item d-flex justify-content-between bg-light">
+                                        <div class="text-success">
+                                            <h6 class="my-0">
+                                                Valeur du coupon
+                                            </h6>
+                                            <small>{{ order.coupon.code }}</small>
+                                        </div>
+                                        <b class="text-success">-{{ order.coupon.amount }} fcfa</b>
+                                    </li>
+                                    {% endif %}
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Total TTC (à payer à la livraison)</span>
+                                        <h3>{{ order.get_total }} FCFA</h3>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row h-100">
+                <div class="text-center p-3">
+                    <a href="{% url 'render_order_to_pdf' order.id order.unique_code %}"
+                        class="btn btn-outline-info btn-sm btn-block mb-2 smaller">
+                        Imprimer la fiche de commande
+                    </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4 py-3 text-center pt-3 pb-3">
+                    <img src="{{ order.order_qr_code.url }}" alt="{{ order.unique_code }}"
+                        width="170" height="170">
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+
+{% block extra_content %}
+    <!-- MODALS -->
+    <div class="modal fade" id="{{order.unique_code}}-deliver" tabindex="-1" role="dialog"
+        aria-labelledby="{{order.unique_code}}-deliver" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="modal-title-{{order.unique_code}}-deliver">
+                        Êtes-vous prête(e) à livrer cette commande ?
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="py-3">
+                        Une fois marquée comme ayant été livrée, cette commande devra être 
+                        impérativement livrée au client.
+                        Ceci est irréversible.
+                        <br><br>
+                        Vous en êtes sûr(e) ?
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="{% url 'mark_order_as_delivered' order.id order.unique_code %}"
+                        class="btn btn-outline-info">
+                        Oui, marquer comme ayant été livrée
+                    </a>
+                    <button type="button" class="btn btn-danger ml-auto" data-dismiss="modal">
+                        Non, fermer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="{{order.unique_code}}-receive" tabindex="-1" role="dialog"
+        aria-labelledby="{{order.unique_code}}-receive" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="modal-title-{{order.unique_code}}-receive">
+                        Vous en êtes sûr(e) ?
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="py-3">
+                        Êtes-vous certain(e) d'avoir livrée cette commande au client ?
+                        Ceci est irréversible.
+                        <br><br>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="{% url 'mark_order_as_received' order.id order.unique_code %}"
+                        class="btn btn-outline-info">
+                        Oui, marquer comme ayant été reçue
+                    </a>
+                    <button type="button" class="btn btn-danger ml-auto" data-dismiss="modal">
+                        Non, fermer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock extra_content %}

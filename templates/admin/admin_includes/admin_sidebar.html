@@ -1,0 +1,143 @@
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'admin-home' %}">
+                        <i class="typcn typcn-device-desktop menu-icon"></i>
+                        <span class="menu-title">
+                            Tableau de bord
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse" href="#menu-orders" aria-expanded="false"
+                        aria-controls="menu-orders">
+                        <i class="typcn typcn-document-text menu-icon"></i>
+                        <span class="menu-title">
+                            Commandes
+                        </span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="menu-orders">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'all-orders' %}">
+                                    Toutes les commandes
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'order-not-received' %}">
+                                    Livrées
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'order-received' %}">
+                                    Reçues
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'order-not-delivered' %}">
+                                    Non livrées
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse" href="#menu-items" aria-expanded="false"
+                        aria-controls="menu-items">
+                        <i class="typcn typcn-document-text menu-icon"></i>
+                        <span class="menu-title">
+                            Articles
+                        </span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="menu-items">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'all-items' %}">
+                                    Voir tout
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'items-table' %}">
+                                    Table des articles
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'public-items' %}">
+                                    Articles publics
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse" href="#menu-repports" aria-expanded="false"
+                        aria-controls="menu-repports">
+                        <i class="typcn typcn-document-text menu-icon"></i>
+                        <span class="menu-title">
+                            Remboursements
+                        </span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="menu-repports">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    Requêtes
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    Approuvés
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse" href="#menu-coupons" aria-expanded="false"
+                        aria-controls="menu-coupons">
+                        <i class="typcn typcn-document-text menu-icon"></i>
+                        <span class="menu-title">
+                            Coupons
+                        </span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="menu-coupons">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    Voir tout
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    Ajouter un coupon
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fa fa-user menu-icon"></i>
+                        <span class="menu-title">Utilisateurs</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fa fa-envelope-open menu-icon"></i>
+                        <span class="menu-title">Newsletter</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+

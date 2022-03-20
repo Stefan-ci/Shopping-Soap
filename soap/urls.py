@@ -21,12 +21,11 @@ urlpatterns = [
     
     path('', include('website.urls')),
     path('blog/', include('blog.urls', namespace='blog')),
-
+    path('administration/admin/', include('administration.urls')),
+    
     path('robots.txt/', TemplateView.as_view(
         template_name='robots.txt',
         content_type='text/plain')),
-    
-    
     path('sitemap.xml/', sitemap,
         {
             'sitemaps': {

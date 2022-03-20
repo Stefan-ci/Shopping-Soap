@@ -1,0 +1,432 @@
+{% extends 'admin/admin_includes/admin_base.html' %}
+
+{% load static %}
+{% load ratings %}
+{% load humanize %}
+{% load hitcount_tags %}
+
+
+{% block title %}
+    <title>
+        Menus - Table | Administration - Ivoire Bouffe 😋😋
+    </title>
+{% endblock title %}
+
+{% block extra_head %}{% endblock extra_head %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-xl-6 grid-margin stretch-card flex-column">
+            <h2 class="mb-2 text-titlecase mb-4 mt-3 text-center text-uppercase">
+                Menus présents dans la base de données
+            </h2>
+            <div class="row h-100 mt-3">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="table-responsive pt-3">
+                            <table class="table table-striped project-orders-table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="ml-5">N°</th>
+                                        <th>Nom</th>
+                                        <th>Prix</th>
+                                        <th>Prix de réduction</th>
+                                        <th>Catégorie</th>
+                                        <th>Public</th>
+                                        <th>Disponibilité</th>
+                                        <th>Modifier</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in items %}
+                                    <tr>
+                                        {% if item.is_public %}
+                                        <th class="text-success">{{ forloop.counter }}</th>
+                                        {% else %}
+                                        <th class="text-danger">{{ forloop.counter }}</th>
+                                        {% endif %}
+
+                                        <td>
+                                            <a href="#">
+                                                <b>
+                                                    {{ item.name }}
+                                                </b>
+                                            </a>
+                                        </td>
+                                        <td class="smaller">
+                                            {{ item.price }} FCFA
+                                        </td>
+                                        <td>
+                                            {% if item.discount_price %}
+                                            {{ item.discount_price }} fcfa
+                                            {% else %}
+                                            <em>Aucun</em>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {{ item.category.name }}
+                                        </td>
+                                        <td>
+                                            {% if item.is_public %}
+                                            <label class="badge badge-success">
+                                                Oui
+                                            </label>
+                                            {% else %}
+                                            <label class="badge badge-danger">
+                                                Non
+                                            </label>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {{ item.is_available }}
+                                        </td>
+                                        <td>
+                                            <a href="#" class="btn btn-outline-info btn-sm"
+                                                data-toggle="modal" data-target="#update-{{item.id}}">
+                                                Actualiser
+                                            </a>
+                                            <a href="#" class="btn btn-danger btn-sm" data-toggle="modal"
+                                                data-target="#delete-{{ item.id }}">
+                                                Supprimer
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <div class="p-3">
+                                            <em>
+                                                Il n'y a pas de menus pour l'instant.
+                                                Revenez plus tard !
+                                            </em>
+                                        </div>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if items.has_other_pages %}
+            <div class="row pt-3">
+                <div class="col-md-12 text-center">
+                    <ul class="pagination justify-content-end mb-0 text-center">
+                        
+                        {% if items.has_previous %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="?page={{ items.previous_page_number }}" tabindex="-1">
+                                <span>&laquo;</span>
+                                <span class="sr-only">Précédent</span>
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% for page_num in items.paginator.page_range %}
+                        {% if items.number == page_num %}
+                        <li class="page-item active mr-1 ml-1">
+                            <span class="page-link">
+                                {{ page_num }}
+                                <span class="sr-only">(current)</span>
+                            </span>
+                        </li>
+                        {% elif page_num > items.number|add:'-2' and page_num < items.number|add:'2' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                        </li>
+                        {% elif page_num > items.number|add:'-3' and page_num < items.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                        </li>
+                        {% elif page_num > items.number|add:'-4' and page_num < items.number|add:'4' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if items.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ items.next_page_number }}">
+                                <span>&raquo;</span>
+                                <span class="sr-only">Suivant</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+{% endblock content %}
+
+
+{% block extra_content %}
+    
+    <!-- MODALS -->
+
+    {% for item in items %}
+    <div class="modal fade" id="delete-{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="delete-{{ item.id }}"
+        aria-hidden="true">
+        <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
+            <div class="modal-content bg-gradient-danger">
+                <div class="modal-header">
+                    <h4 class="modal-title text-center text-uppercase">
+                        Suppression
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="py-3 text-center">
+                        <i class="typcn typcn-bell mx-0"></i>
+                        <h4 class="heading mt-4">Voulez-vous supprimer {{ item.name }}!</h4>
+                        <p>
+                            Cette action est irréversible, faites donc attention.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <a href="{% url 'delete-item' item.id %}" class="btn btn-outline-danger">Supprimer</a>
+                    <button type="button" class="text-white ml-auto" data-dismiss="modal">
+                        Non, merci
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+
+    {% for item in items %}
+    <div class="modal fade" id="update-{{item.id}}"
+        tabindex="-1" role="dialog" 
+        aria-labelledby="{{item.name}}{{item.id}}"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" 
+                        id="modal-title-{{item.name}}{{item.id}}">
+                        Modofier | 
+                        <span class="text-info">
+                            {{item.name}}
+                        </span>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="py-3">
+                        <h3 class="heading mt-2 text-center mb-3 text-underline">
+                            Actualisation du menu.
+                        </h3>
+                        <div>
+                            <p class="card-description text-center">
+                                <small>
+                                    Modifiez le formulaire pour actualiser ce menu.
+                                </small>
+                            </p>
+
+                            <form class="forms-sample mt-3" method="POST" enctype="multipart/form-data"
+                                action="{% url 'update-item-in-table' item.id %}">
+                                {% csrf_token %}
+                                {{ form.media }}
+
+                                <div class="form-group pb-2">
+                                    <label for="item_name-{{item.id}}">
+                                        Nom du menu
+                                    </label>
+                                    {{ form.name }}
+                                    <!-- <input type="text" id="item_name-{{item.id}}"
+                                        class="form-control form-control-sm border"
+                                        placeholder="Ex: Salade aux saucisses"
+                                        name="item_name-{{item.id}}" value="{{ item.name }}"> -->
+                                </div>
+
+                                <div class="form-group pb-2">
+                                    <label for="item_tags-{{item.id}}">
+                                        Tags (séparés par des virgules)
+                                    </label>
+                                    {{ form.tags }}
+                                    <!-- <input type="text" id="item_tags-{{item.id}}" class="form-control form-control-sm border"
+                                        value="{% for tag in item.tags.all %}{{tag}},{% endfor %}"
+                                        placeholder="Ex: sauce, dîner, repas" name="item_tags-{{item.id}}"> -->
+                                </div>
+
+
+                                <div class="form-group pb-2">
+                                    <label for="description">
+                                        Description du menu
+                                    </label>
+                                    <textarea name="description-{{item.id}}" id="" rows="4" class="form-control border"
+                                        placeholder="Description du menu ...">{{ item.description }}</textarea>
+                                </div>
+
+                                <div class="form-group pb-2">
+                                    <label for="category">
+                                        Catégorie du menu
+                                    </label>
+                                    <select class="form-control form-control-sm border" id="category" name="category-{{ item.id }}">
+                                        <option value="{{ item.category.name }}" selected>
+                                            {{ item.category.name }}
+                                        </option>
+                                        {% for category in categories %}
+                                        <option value="{{ category.name }}">
+                                            {{ category.name }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="form-group pb-2">
+                                    <label for="picture" class="mr-2">
+                                        Image principale
+                                    </label>
+                                    <input type="file" name="picture-{{ item.id }}" class="file-upload-default">
+                                    <div class="input-group col-xs-12">
+                                        <input type="text" class="form-control file-upload-info" disabled
+                                            placeholder="Image principale" value="{{ item.picture }}">
+                                        <span class="input-group-append">
+                                            <button class="file-upload-browse btn btn-primary"
+                                                type="button">Choisir</button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group pb-2">
+                                    <label for="price">
+                                        Prix du menu
+                                    </label>
+                                    <input type="number" name="price-{{ item.id }}" id="price-{{ item.id }}"
+                                        min="1" class="form-control form-control-sm border" value="{{ item.price }}">
+                                </div>
+
+                                <div class="form-group pb-2">
+                                    <label for="is_available">
+                                        Gestion du stock
+                                    </label>
+                                    <select class="form-control form-control-sm border" id="is_available-{{ item.id }}"
+                                        name="is_available" required>
+                                        <option value="{{ item.is_available }}" selected>
+                                            {{ item.is_available }}
+                                        </option>
+                                        <option value="out_of_stock">En rupture de stock</option>
+                                        <option value="undefined">Non défini</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group pb-2">
+                                    <p class="mb-2">Menu public ?</p>
+                                    <label class="toggle-switch toggle-switch-info">
+                                        <input type="checkbox" name="is_public-{{ item.id }}"
+                                            {% if item.is_public %}
+                                            checked
+                                            {% endif %}
+                                            >
+                                        <span class="toggle-slider round"></span>
+                                    </label>
+                                </div>
+
+                                <div class="form-group pb-2">
+                                    <label for="discount_price">
+                                        Prix de réduction
+                                    </label>
+                                    <input type="number" name="discount_price-{{ item.id }}"
+                                        id="discount_price-{{ item.id }}"
+                                        min="1" class="form-control form-control-sm border"
+                                        {% if item.discount_price %}
+                                        value="{{ item.discount_price }}"
+                                        {% endif %}
+                                        >
+                                </div>
+
+                                <div class="form-group pb-2">
+                                    <label for="picture" class="mr-2">
+                                        Deuxième image
+                                    </label>
+                                    <input type="file" name="picture_2-{{ item.id }}" class="file-upload-default">
+                                    <div class="input-group col-xs-12">
+                                        <input type="text" class="form-control file-upload-dark" disabled
+                                            placeholder="Deuxième image"
+                                            {% if item.picture_2 %}
+                                            value="{{ item.picture_2 }}"
+                                            {% endif %}>
+                                        <span class="input-group-append">
+                                            <button class="file-upload-browse btn btn-primary"
+                                                type="button">Choisir</button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group pb-2">
+                                    <label for="picture" class="mr-2">
+                                        Troisième image
+                                    </label>
+                                    <input type="file" name="picture_3-{{ item.id }}" class="file-upload-default"
+                                        {% if item.picture_3 %}
+                                        value="{{ item.picture_3.url }}"
+                                        {% endif %}
+                                        >
+                                    <div class="input-group col-xs-12">
+                                        <input type="text" class="form-control file-upload-dark" disabled
+                                            placeholder="Troisième image"
+                                            placeholder="Deuxième image"
+                                            {% if item.picture_3 %}
+                                            value="{{ item.picture_3 }}"
+                                            {% endif %}
+                                            >
+                                        <span class="input-group-append">
+                                            <button class="file-upload-browse btn btn-primary"
+                                                type="button">Choisir</button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-outline-success btn-block mt-3">
+                                    Actualiser ce menu
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger ml-auto" data-dismiss="modal">
+                        Fermer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% for error in form.errors %}
+    <script>
+        Toastify({
+            text: "{{ error }}",
+            duration: 7000,
+            close: true,
+            gravity: "top",
+            position: "center",
+            stopOnFocus: true,
+            newWindow: true,
+            style: {
+                background: "var(--error)",
+            },
+            offset: {
+                x: 50,
+                y: 10
+            }
+        }).showToast();
+    </script>
+    {% endfor %}
+    {% empty %}
+    {% endfor %}
+
+{% endblock extra_content %}

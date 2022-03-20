@@ -1,0 +1,156 @@
+        {% load static %}
+        {% load humanize %}
+        <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+            <div class="navbar-brand-wrapper d-flex justify-content-center">
+                <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
+                    <a class="navbar-brand brand-logo" href="{% url 'admin-home' %}">
+                        <img src="{% static 'assets/images/logo.png' %}" alt="logo" />
+                    </a>
+                    <a class="navbar-brand brand-logo-mini" href="{% url 'admin-home' %}">
+                        <img src="{% static 'assets/images/logo.png' %}" alt="logo" />
+                    </a>
+                    <button class="navbar-toggler navbar-toggler align-self-center" type="button"
+                        data-toggle="minimize">
+                        <span class="typcn typcn-th-menu"></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+                <ul class="navbar-nav mr-lg-2">
+                    <li class="nav-item nav-profile dropdown">
+                        <a class="nav-link" href="#" data-toggle="dropdown" id="profileDropdown">
+                            <img src="{{ request.user.profile.avatar.url }}" alt="profile" />
+                            <span class="nav-profile-name">
+                                {{ request.user.username }}
+                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
+                            aria-labelledby="profileDropdown">
+                            <a class="dropdown-item" href="{% url 'home' %}">
+                                <i class="typcn typcn-eject text-primary"></i>
+                                Quitter l'administration
+                            </a>
+                            <a class="dropdown-item" href="{% url 'logout' %}">
+                                <i class="typcn typcn-eject text-primary"></i>
+                                Se déconnecter
+                            </a>
+                        </div>
+                    </li>
+                    <li class="nav-item nav-user-status dropdown">
+                        <p class="mb-0">
+                            {{ request.user.last_login|naturaltime }}
+                        </p>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav navbar-nav-right">
+                    <li class="nav-item nav-search dropdown">
+                        <form method="GET">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Chercher ici ..."
+                                    aria-label="search" aria-describedby="search" name="search"
+                                    value="{{ request.GET.search }}">
+                                <div class="input-group-prepend">
+                                    <button type="submit" class="input-group-text" id="search">
+                                        <i class="typcn typcn-zoom"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center"
+                            id="messageDropdown" href="#" data-toggle="dropdown">
+                            <i class="typcn typcn-cog-outline mx-0"></i>
+                            <span class="count"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                            aria-labelledby="messageDropdown">
+                            <p class="mb-0 font-weight-normal float-left dropdown-header">
+                                Messages
+                            </p>
+                            {% for contact in data.unread_contacts_nav_list %}
+                            <a class="dropdown-item preview-item" href="#">
+                                <div class="preview-thumbnail">
+                                    <img src="{% static 'assets/images/user.png' %}" alt="image" class="profile-pic">
+                                </div>
+                                <div class="preview-item-content flex-grow">
+                                    <h6 class="preview-subject ellipsis font-weight-normal">
+                                        {{ contact.email }}
+                                    </h6>
+                                    <p class="font-weight-light small-text text-muted mb-0">
+                                        {{ contact.subject }}
+                                    </p>
+                                </div>
+                            </a>
+                            {% empty %}
+                            <span class="dropdown-item preview-item">
+                                <small>
+                                    <em>
+                                        Vous n'avez pas reçu de messages pour l'instant.
+                                    </em>
+                                </small>
+                            </span>
+                            {% if unread_contacts_count > 8 %}
+                            <div class="dropdown-divider"></div>
+                            <a href="{% url 'admin-inbox' %}" class="btn btn-block btn-sm btn-outline-info">
+                                <small>Voir tout</small>
+                            </a>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown mr-0">
+                        <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center"
+                            id="notificationDropdown" href="#" data-toggle="dropdown">
+                            <i class="typcn typcn-bell mx-0"></i>
+                            <span class="count"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                            aria-labelledby="notificationDropdown">
+                            <p class="mb-0 font-weight-normal float-left dropdown-header">
+                                Notifications
+                            </p>
+                            {% for notif in request.user.notifications.unread %}
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-{{ notif.level }}">
+                                        <i class="typcn typcn-info mx-0"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <h6 class="preview-subject font-weight-normal">
+                                        {{ notif.verb }}
+                                    </h6>
+                                    <p class="font-weight-light small-text mb-0 text-muted">
+                                        {{ notif.timestamp|naturaltime }}
+                                    </p>
+                                </div>
+                            </a>
+                            {% empty %}
+                            <span class="dropdown-item preview-item">
+                                <small>
+                                    <em>
+                                        Vous n'avez pas de notifications pour l'instant.
+                                    </em>
+                                </small>
+                            </span>
+                            {% endfor %}
+                            {% if request.user.notifications.unread.count > 8 %}
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="btn btn-block btn-sm btn-outline-info">
+                                <small>Voir tout</small>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </li>
+                </ul>
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+                    data-toggle="offcanvas">
+                    <span class="typcn typcn-th-menu"></span>
+                </button>
+            </div>
+        </nav>
+

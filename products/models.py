@@ -8,7 +8,8 @@ from django.contrib.contenttypes.fields import GenericRelation
 
 STOCK_CHOICES = (
     ('En rupture de stock', 'En rupture de stock'),
-    ('Disponible', 'Disponible')
+    ('Disponible', 'Disponible'),
+    ('Supprimé', 'Supprimé')
 )
 
 

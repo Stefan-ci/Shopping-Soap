@@ -1065,7 +1065,7 @@ def login_view(request):
             
             if user.is_superuser:
                 messages.success(request, "Bienvenue " + str(username) + " !")
-                return redirect('home')
+                return redirect('admin-home')
             return redirect('home')
         else:
             messages.error(request, """

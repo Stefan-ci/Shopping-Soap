@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     
     # LOCALE APPS
     'address.apps.AddressConfig',
+    'administration.apps.AdministrationConfig',
     'blog.apps.BlogConfig',
     'contacts.apps.ContactsConfig',
     'coupons.apps.CouponsConfig',
@@ -247,7 +248,7 @@ EMAIL_BACKEND = config('CONSOLE_EMAIL_BACKEND')  # default for now
 
 #############################################################
 #######                                             #########
-#######    SESSION, PASSWORD, CACHES CONFIGS        #########
+####### SESSION, PASSWORD, CACHES, COOKIES CONFIGS  #########
 #######                                             #########
 #############################################################
 PASSWORD_RESET_TIMEOUT_DAYS = 1
@@ -257,6 +258,12 @@ CACHES = {
         'LOCATION': 'CacheTable',
     }
 }
+SESSION_CACHE_ALIAS = "default"
+SESSION_COOKIE_AGE = 365 * 24 * 60 * 60 # one year
+SESSION_COOKIE_PATH = "/"
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_DOMAIN = None
+SESSION_COOKIE_SECURE = False
 
 
 

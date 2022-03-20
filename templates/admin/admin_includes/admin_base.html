@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta name="robots" content="nofollow">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}{% endblock title %}
+    {% block extra_head %}{% endblock extra_head %}
+    <link rel="canonical" href="{{ request.path_info }}">
+    <link rel="shortcut icon" href="{% static 'assets/images/favicon.png' %}">
+    <link href="{% static 'css/toastify.min.css' %}" rel="stylesheet">
+    <link href="{% static 'star-ratings/css/star-ratings.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/admin/typicons/typicons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin/style.css' %}">
+    <script src="{% static 'js/htmx.min.js' %}"></script>
+    <script src="{% static 'js/toastify-js.js' %}"></script>
+    <script src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+    <style>
+        :root {
+            --warning: #fb6340 !important;
+            --info: #11cdef !important;
+            --error: #f5365c !important;
+            --success: #2dce89 !important;
+            --debug: #ddf509 !important;
+        }
+        .bg-error{
+            background-color: #f5365c !important;
+        }
+        .f-rem-15{
+            font-size: 1.5rem;
+        }
+        .small{
+            font-size: small !important;
+        }
+        .smaller{
+            font-size: smaller !important;
+        }
+        .border{
+            border: 0.25px solid #000 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-scroller">
+        {% block navbar %}
+            {% include 'admin/admin_includes/admin_navbar.html' %}
+        {% endblock navbar %}
+        <div class="container-fluid page-body-wrapper">
+            {% block sidebar %}
+                {% include 'admin/admin_includes/admin_sidebar.html' %}
+            {% endblock sidebar %}
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    {% block content %}{% endblock content %}
+                    {% block extra_content %}{% endblock extra_content %}
+                </div>
+                <!-- content-wrapper ends -->
+                <footer class="footer">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                                <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                                    Copyright &copy;
+                                    <script>
+                                        document.write(new Date().getFullYear());
+                                    </script>
+                                    <a href="{% url 'admin-home' %}" class="text-muted">
+                                        Administration Bon Savon - CI
+                                    </a>. 
+                                    Tous droits réservés.
+                                </span>
+                                <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center text-muted">
+                                    <a href="{% url 'home' %}" class="text-muted">
+                                        Bon Savon - CI
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+            <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    {% if messages %}
+    {% for message in messages %}
+    <script>
+        Toastify({
+            text: "{{ message }}",
+            duration: 5000,
+            close: true,
+            gravity: "top",
+            position: "center",
+            stopOnFocus: true,
+            newWindow: true,
+            style: {
+                background: "var(--{{message.tags}})",
+            },
+            offset: {
+                x: 50,
+                y: 10
+            }
+        }).showToast();
+    </script>
+    {% endfor %}
+    {% endif %}
+    <script>
+        document.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        });
+    </script>
+    <script src="{% static 'js/admin/base.js' %}"></script>
+    <script src="{% static 'js/admin/off-canvas.js' %}"></script>
+    <script src="{% static 'js/admin/hoverable-collapse.js' %}"></script>
+    <script src="{% static 'js/admin/template.js' %}"></script>
+    <script src="{% static 'js/admin/settings.js' %}"></script>
+    <script src="{% static 'js/admin/Chart.min.js' %}"></script>
+    <script src="{% static 'js/admin/file-upload.js' %}"></script>
+    <script src="{% static 'js/admin/formpickers.js' %}"></script>
+    <script src="{% static 'js/admin/jq.tablesort.js' %}"></script>
+    <script src="{% static 'js/admin/jquery-file-upload.js' %}"></script>
+    <script src="{% static 'js/admin/dashboard.js' %}"></script>
+    {% block extra_scripts %}{% endblock extra_scripts %}
+</body>
+</html>
