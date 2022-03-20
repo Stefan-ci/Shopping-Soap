@@ -1,0 +1,56 @@
+{% extends 'public/includes/base.html' %} 
+
+
+{% load static %} 
+
+
+{% block title %} 
+    Oops quelque a mal tourné !! | {{ site_name }}
+{% endblock title %}
+
+
+{% block seo %}
+    <meta name="keywords" content="">
+    <meta name="title" content="Ooops quelque a mal tourné !! | {{ site_name }}">
+    <meta name="locale" content="fr_CI">
+    <meta name="description" content="">
+    <meta property="og:title" content="Ooops quelque a mal tourné !! | {{ site_name }}">
+    <meta property="og:url" content="{{ current_site }}{{ request.path }}">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="{% static 'assets/images/404.jpeg' %}">
+    <meta property="og:type" content="Site internet">
+    <meta property="og:locale" content="fr_CI">
+    <meta property="og:site_name" content="{{ site_name }}">
+{% endblock seo %}
+
+
+{% block content %}
+    <!-- Hero Section Begin -->
+    <section class="">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-8 text-center align-content-center mb-5">
+                    <img src="{% static 'assets/images/404.jpeg' %}">
+                    <div class="mt-3 mb-2">
+                        <h2>Oops !!!!!</h2>
+                    </div>
+                    <div class="h4 text-center align-content-center mb-5">
+                        Il semblerait que votre session ait expiré <br /> <br />
+                        Veuillez recharger la page complètement et tenter de nouveau !
+                    </div>
+                    <div class="alert alert-warning show fade h6 text-center align-content-center mb-5" role="alert">
+                        Si vous tentez de soumettre un formulaire, veuillez ne plus 
+                        soumettre les aniennes informations saisies. Rechargez complètement
+                        votre navigateur, remplisez le formulaire en question et tentez 
+                        de nouveau. Si vous estimez cependant que vous ne faites rien
+                        de tout ça, 
+                        <a href="{% url 'contact' %}">contactez-nous</a>
+                        et nous vous assisterons !
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Hero Section End -->
+{% endblock content %}
