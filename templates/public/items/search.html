@@ -9,12 +9,12 @@
 
 {% block seo %}
     <meta name="keywords" content="">
-    <meta name="title" content="">
+    <meta name="title" content="'{{ request.GET.soap }}' | {{ site_name }}">
     <meta name="locale" content="fr_CI">
-    <meta name="description" content="">
+    <meta name="description" content="Recherche '{{ request.GET.soap }}' | {{ site_name }}">
     <meta property="og:title" content="">
     <meta property="og:url" content="{{ current_site }}{{ request.path }}">
-    <meta property="og:description" content="">
+    <meta property="og:description" content="Recherche '{{ request.GET.soap }}' | {{ site_name }}">
     <meta property="og:image" content="{% static 'assets/images/logo.png' %}">
     <meta property="og:type" content="Site internet">
     <meta property="og:locale" content="fr_CI">
@@ -23,7 +23,7 @@
 
 
 {% block title %}
-        Recherche "{{ request.GET.soap }}" | Bon Savon - CI
+     '{{ request.GET.soap }}' | {{ site_name }}
 {% endblock title %}
 
 {% block extra_head %}{% endblock extra_head %}

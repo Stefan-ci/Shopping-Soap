@@ -25,7 +25,7 @@ LOGIN_URL = 'login'
 ADMINS = ['claverdiby9@gmail.com', 'kiuv.abraj@gmail.com', 'kielhans07@gmail.com']
 STAFF = ['claverdiby9@gmail.com', 'kiuv.abraj@gmail.com', 'kielhans07@gmail.com']
 
-
+SITE_NAME = 'Savon'
 
 
 #############################################################
@@ -122,6 +122,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'soap.context_processors.site_name',  # Added
             ],
         },
     },

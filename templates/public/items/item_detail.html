@@ -5,10 +5,10 @@
 
 {% block seo %}
     <meta name="keywords" content="{% for tag in item.tags.all %}{{tag}},{% endfor %}">
-    <meta name="title" content="{{ item.name|safe }} | Bon Savon - CI">
+    <meta name="title" content="{{ item.name|safe }} | {{ site_name }}">
     <meta name="locale" content="fr_CI">
     <meta name="description" content="{{ item.description|safe }}">
-    <meta property="og:title" content="{{ item.name|safe }} | Bon Savon - CI">
+    <meta property="og:title" content="{{ item.name|safe }} | {{ site_name }}">
     <meta property="og:url" content="{{ current_site }}{{ request.path }}">
     <meta property="og:description" content="{{ item.description|safe }}">
     <meta property="og:image" content="{{ item.picture.url }}">
@@ -19,7 +19,7 @@
 
 
 {% block title %}
-        {{ item.name|safe }} | Bon Savon - CI
+        {{ item.name|safe }} | {{ site_name }}
 {% endblock title %}
 
 {% block extra_head %}{% endblock extra_head %}

@@ -3,22 +3,22 @@
 {% load static %}
 
 {% block seo %}
-    <meta name="keywords" content="Remboursement, Remboursement Bon Savon - CI, Bon Savon - CI, bon savon, Côte d'Ivoire">
-    <meta name="title" content="Requête de remboursement | Bon Savon - CI">
+    <meta name="keywords" content="Remboursement, Remboursement {{ site_name }}, {{ site_name }}, bon savon, Côte d'Ivoire">
+    <meta name="title" content="Requête de remboursement | {{ site_name }}">
     <meta name="locale" content="fr_CI">
-    <meta name="description" content="Remboursement - Bon Savon - CI dès maintenat en nous faisons part de votre objet.">
-    <meta property="og:title" content="Requête de remboursement | Bon Savon - CI">
+    <meta name="description" content="Remboursement - {{ site_name }} dès maintenat en nous faisons part de votre objet.">
+    <meta property="og:title" content="Requête de remboursement | {{ site_name }}">
     <meta property="og:url" content="{{ current_site }}{{ request.path }}">
-    <meta property="og:description" content="Remboursement - Bon Savon - CI dès maintenat en nous faisons part de votre objet.">
+    <meta property="og:description" content="Remboursement - {{ site_name }} dès maintenat en nous faisons part de votre objet.">
     <meta property="og:image" content="{% static 'assets/images/logo.png' %}">
     <meta property="og:type" content="Site internet">
     <meta property="og:locale" content="fr_CI">
-    <meta property="og:site_name" content="Bon Savon - CI">
+    <meta property="og:site_name" content="{{ site_name }}">
 {% endblock seo %}
 
 
 {% block title %}
-        Requête de remboursement | Bon Savon - CI
+        Requête de remboursement | {{ site_name }}
 {% endblock title %}
 
 {% block extra_head %}{% endblock extra_head %}
@@ -33,7 +33,7 @@
                     <div class="leave-comment">
                         <h5 class="text-center pb-3">
                             Requête de remboursement | 
-                            <span class="text-info">Bon Savon - CI</span>
+                            <span class="text-info">{{ site_name }}</span>
                         </h5>
                         <form method="POST" class="form-horizontal" role="form">
                             {% csrf_token %}

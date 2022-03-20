@@ -9,15 +9,15 @@
 
 
 {% block title %} 
-    Bon Savon - CI
+    {{ site_name }}
 {% endblock title %}
 
 {% block seo %}
     <meta name="keywords" content="">
-    <meta name="title" content="Bon Savon - CI">
+    <meta name="title" content="{{ site_name }}">
     <meta name="locale" content="fr_CI">
     <meta name="description" content="">
-    <meta property="og:title" content="Bon Savon - CI">
+    <meta property="og:title" content="{{ site_name }}">
     <meta property="og:url" content="{{ current_site }}{{ request.path }}">
     <meta property="og:description" content="">
     <meta property="og:image" content="{% static 'assets/images/logo.png' %}">
@@ -114,7 +114,8 @@
                 {% for item in items %}
                 <div class="col-lg-3 col-md-4 col-sm-6 mix {{ item.type }}">
                     <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="{{ item.picture.url }}">
+                        <div class="featured__item__pic set-bg" data-setbg="{{ item.picture.url }}"
+                            style="cursor:pointer;" title="{{ item.name|safe }}">
                             <ul class="featured__item__pic__hover">
                                 <li>
                                     {% if not item in request.user.profile.favorite_items.all %}

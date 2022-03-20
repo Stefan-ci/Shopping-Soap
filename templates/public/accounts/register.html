@@ -5,10 +5,10 @@
 
 {% block seo %}
     <meta name="keywords" content="">
-    <meta name="title" content="Inscription | Bon Savon - CI">
+    <meta name="title" content="Inscription | {{ site_name }}">
     <meta name="locale" content="fr_CI">
     <meta name="description" content="">
-    <meta property="og:title" content="Inscription | Bon Savon - CI">
+    <meta property="og:title" content="Inscription | {{ site_name }}">
     <meta property="og:url" content="{{ current_site }}{{ request.path }}">
     <meta property="og:description" content="">
     <meta property="og:image" content="{% static 'assets/images/logo.png' %}">
@@ -19,7 +19,7 @@
 
 
 {% block title %}
-        Inscription | Bon Savon - CI
+        Inscription | {{ site_name }}
 {% endblock title %}
 
 {% block extra_head %}{% endblock extra_head %}

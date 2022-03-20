@@ -9,15 +9,15 @@
 
 
 {% block title %} 
-    Mon panier | Bon Savon - CI
+    Mon panier | {{ site_name }}
 {% endblock title %}
 
 {% block seo %}
     <meta name="keywords" content="">
-    <meta name="title" content="Mon panier | Bon Savon - CI">
+    <meta name="title" content="Mon panier | {{ site_name }}">
     <meta name="locale" content="fr_CI">
     <meta name="description" content="">
-    <meta property="og:title" content="Mon panier | Bon Savon - CI">
+    <meta property="og:title" content="Mon panier | {{ site_name }}">
     <meta property="og:url" content="{{ current_site }}{{ request.path }}">
     <meta property="og:description" content="">
     <meta property="og:image" content="{% static 'assets/images/logo.png' %}">

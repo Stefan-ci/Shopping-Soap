@@ -4,10 +4,10 @@
 
 {% block seo %}
     <meta name="keywords" content="{% for tag in post.tags.all %}{{tag}},{% endfor %}">
-    <meta name="title" content="{{ post.title|safe }} | Bon Savon - CI">
+    <meta name="title" content="{{ post.title|safe }} | {{ site_name }}">
     <meta name="locale" content="fr_CI">
     <meta name="description" content="{{ post.description|safe|truncatechars:154 }}">
-    <meta property="og:title" content="{{ post.title|safe }} | Bon Savon - CI">
+    <meta property="og:title" content="{{ post.title|safe }} | {{ site_name }}">
     <meta property="og:url" content="{{ current_site }}{{ request.path }}">
     <meta property="og:description" content="{{ post.description|safe|truncatechars:154 }}">
     <meta property="og:image" content="{{ post.picture.url }}">
@@ -18,7 +18,7 @@
 
 
 {% block title %}
-        Blog - {{ post.title|safe }} | Bon Savon - CI
+        Blog - {{ post.title|safe }} | {{ site_name }}
 {% endblock title %}
 
 {% block extra_head %}{% endblock extra_head %}

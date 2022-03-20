@@ -6,10 +6,10 @@
 
 {% block seo %}
     <meta name="keywords" content="">
-    <meta name="title" content="">
+    <meta name="title" content="Confirmation de ma commande | {{ site_name }}">
     <meta name="locale" content="fr_CI">
     <meta name="description" content="">
-    <meta property="og:title" content="">
+    <meta property="og:title" content="Confirmation de ma commande | {{ site_name }}">
     <meta property="og:url" content="{{ current_site }}{{ request.path }}">
     <meta property="og:description" content="">
     <meta property="og:image" content="{% static 'assets/images/logo.png' %}">
@@ -21,7 +21,7 @@
 
 
 {% block title %}
-        Confirmation de ma commande | Bon Savon - CI
+        Confirmation de ma commande | {{ site_name }}
 {% endblock title %}
 
 {% block extra_head %}{% endblock extra_head %}
