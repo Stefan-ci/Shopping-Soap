@@ -40,6 +40,7 @@ from orders.forms import CheckoutForm, OrderConfirmForm
 from profils.utils import send_welcome_email, send_suspicious_email
 from orders.utils import admin_email_on_order, user_email_on_order
 from refunds.utils import user_email_on_refund, admin_email_on_refund
+from contacts.utils import user_email_on_contact, admin_email_on_contact
 
 from website.decorators import unauthenticated_user
 from website.utils import create_unique_order_code, update_views, get_ip
@@ -1288,85 +1289,28 @@ def contact_view(request):
 
     if request.method == 'POST':
         contact_form = ContactForm(request.POST or None)
-        if not contact_form.is_valid():
-            messages.warning(request, """
-                Veuillez renseigner tous les champs *CORRECTEMENT* svp !
-            """)
-            return redirect(request.path_info)
         
         if contact_form.is_valid():
             form = contact_form.save(commit=False)
             form.is_answered = False
             form.save()
 
-            name = contact_form.cleaned_data.get('name')
-            email = contact_form.cleaned_data.get('email')
             subject = contact_form.cleaned_data.get('subject')
             message = contact_form.cleaned_data.get('message')
             
             
-            print(name)
-            print(email)
-            print(subject)
-            print(message)
-
-            # Send emails after contact form submited and saved.
-            email_sender = settings.EMAIL_HOST_USER
-            try:
-                team = get_current_site(request)
-                email_receivers = []
-                admins = settings.ADMINS
-                for admin in admins:
-                    email_receivers.append(admin.email)
-                
-                context = {
-                    'team': team,
-                    'name': name,
-                    'email': email,
-                    'subject': subject,
-                    'message': message,
-                    'email_receivers': email_receivers,
-                }
-
-                whole_message = render_to_string('public/emails/contact/admins.html', context)
-                email_subject = f"Contact depuis le site {team}"
-
-                send_email = EmailMessage(
-                    email_subject,
-                    whole_message,
-                    email_sender,
-                    email_receivers,
-                )
-                send_email.send(fail_silently=False)
-
-
-                user_email = [email]
-                user_email_subject = f"Votre message sur {team}"
-                
-                user_context = {
-                    'team': team,
-                    'name': name,
-                    'user_email': user_email
-                }
-
-                user_email_message = render_to_string('public/emails/contact/user.html', user_context)
-                
-                send_user_email = EmailMessage(
-                    user_email_subject,
-                    user_email_message,
-                    email_sender,
-                    user_email,
-                )
-                send_user_email.send(fail_silently=False)
-                
-                messages.success(request, """
-                    Merci de nous avoir contacté, nous vous répondrons sous peu.
-                    Merci et à bientôt !
-                """)
-                return redirect('home')
-            except:
-                return redirect('home')
-
+            admin_email_on_contact(request, subject, message, contact_form)
+            user_email_on_contact(request, contact_form)
+            messages.success(request, """
+                Merci de nous avoir contacté, nous vous répondrons sous peu.
+                Merci et à bientôt !
+            """)
+            return redirect('home')
+        
+        else:
+            messages.error(request, "Veuillez remplir le formulaire correctement !")
+            return redirect(request.path_info)
+            
     else:
         contact_form = ContactForm()
     context = {
@@ -1376,6 +1320,8 @@ def contact_view(request):
 
     template_name = 'public/support/contact.html'
     return render(request, template_name, context)
+
+
 
 
 
