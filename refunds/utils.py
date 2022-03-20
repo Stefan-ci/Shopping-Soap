@@ -17,7 +17,7 @@ def admin_email_on_refund(request, refund, order):
     receivers = []
     admins = settings.ADMINS
     for admin in admins:
-        receivers.append(admin.email)
+        receivers.append(admin)
     
     context = {
         'team': team,

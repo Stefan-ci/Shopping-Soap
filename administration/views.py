@@ -62,7 +62,7 @@ def admin_home_view(request):
 @login_required(login_url='login')
 @admin_only
 def item_detail_view(request, id, slug):
-    item = get_object_or_404(Soap, id=id)
+    item = get_object_or_404(Soap, id=id, slug=slug)
     slug = item.slug
     slug = slug
     data = generic_data(request)
@@ -220,7 +220,7 @@ def public_items_list_view(request):
 @login_required(login_url='login')
 @admin_only
 def order_detail_view(request, id, unique_code):
-    order = get_object_or_404(Order, id=id)
+    order = get_object_or_404(Order, id=id, unique_code=unique_code)
     unique_code = order.unique_code
     unique_code = unique_code
 

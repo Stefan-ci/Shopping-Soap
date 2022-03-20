@@ -8,11 +8,12 @@ class Refund(models.Model):
         blank=True, verbose_name="Utilisateur")
     name = models.CharField(max_length=100, verbose_name="Nom", null=True, 
         blank=True)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, 
+    order = models.OneToOneField(Order, on_delete=models.DO_NOTHING, 
         verbose_name="Commande")
     reason = models.TextField(verbose_name="Les raisons")
     accepted = models.BooleanField(default=False, verbose_name="Requête acceptée")
-    paid = models.BooleanField(default=False, verbose_name="Remboursé")
+    refused = models.BooleanField(default=False, verbose_name="Réfusée")
+    paid = models.BooleanField(default=False, verbose_name="Remboursée")
     email = models.EmailField(verbose_name="Adresse mail du demandeur")
     date = models.DateTimeField(auto_now_add=True, verbose_name='Date')
 

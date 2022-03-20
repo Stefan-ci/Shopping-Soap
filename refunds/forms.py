@@ -9,20 +9,20 @@ class RefundForm(forms.Form):
             'id': 'unique_code',
             'type': 'text',
             'required': 'true',
-            'placeholder': 'Le code de votre commande ...',
+            'placeholder': 'Référence/Code de votre commande ...',
         }))
     name = forms.CharField(widget=forms.TextInput(attrs={
             'class': 'form-control',
             'id': 'name',
             'type': 'text',
             'required': 'true',
-            'placeholder': 'Votre nom ...',
+            'placeholder': 'Nom et prénom(s)...',
         }))
     email = forms.EmailField(widget=forms.EmailInput(attrs={
             'class': 'form-control',
             'id': 'email',
             'type': 'email',
-            'placeholder': 'Votre adresse mail valide/valable ...',
+            'placeholder': 'Adresse mail valide/valable (pour vous recontacter) ...',
             'required': 'true',
         }))
     message = forms.CharField(widget=forms.Textarea(

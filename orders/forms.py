@@ -39,4 +39,6 @@ class CheckoutForm(DynamicFormMixin, forms.Form):
 
 class OrderConfirmForm(forms.Form):
 	confirm_order = forms.BooleanField(required=False)
-	phone_number = PhoneNumberField()
+	phone_number = PhoneNumberField(
+		widget=forms.TextInput(attrs={'placeholder': '(+2250707070707)'})
+	)

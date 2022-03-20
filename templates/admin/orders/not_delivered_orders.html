@@ -83,7 +83,7 @@
                                         </td>
                                         <td class="text-success">
                                             <b>
-                                                {{ order.get_total }} FCFA
+                                                {{ order.order_total }} FCFA
                                             </b>
                                         </td>
                                     </tr>
@@ -228,7 +228,7 @@
                                     Somme à payer à la livraison:
                                 </strong>
                                 <span class="text-success f-rem-15">
-                                    {{ order.get_total }} FCFA
+                                    {{ order.order_total }} FCFA
                                 </span>
                             </div>
                             {% if order.being_delivered %}

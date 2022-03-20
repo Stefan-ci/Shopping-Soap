@@ -30,7 +30,6 @@ from newsletter.models import Newsletter
 from reports.models import Sales
 from refunds.models import Refund
 from promotions.models import Promotion
-from address.models import ShippingCity, ShippingCountry
 
 from profils.forms import CreateUserForm
 from contacts.forms import ContactForm
@@ -198,43 +197,58 @@ class RequestRefundView(View):
             
             try:
                 order = Order.objects.get(unique_code=unique_code)
-                if order:
-                    order.refund_requested = True
-                    order.save()
-
-                    # Store the refund request
-                    refund = Refund.objects.create(
-                        user=self.request.user,
-                        name=name,
-                        order=order,
-                        reason=message,
-                        accepted=True,
-                        email=email,
-                        paid=False
-                    )
-
-                    try:
-                        # Sending emails to admins & user
-                        admin_email_on_refund(self.request, refund, order)
-                    except:
-                        pass
-
-                    try:
-                        user_email_on_refund(self.request, refund, order)
-                    except:
-                        pass
-                    messages.info(self.request, """
-                        Nous avons reçu votre requête de remboursement. 
-                        Elle est en cours de traitement.
-                    """)
-                    return redirect('item-list')
-            except ObjectDoesNotExist:
+            except Refund.DoesNotExist:
                 messages.error(self.request, """
                     Vous essayez de vous faire rembourser sur un achat qui n'existe pas.
                     Nous ne pouvons donc donner suite à votre requête!
                     Merci et à bientôt.
                 """)
                 return redirect(self.request.path_info)
+                
+            except:    
+                return redirect(self.request.path_info)
+            
+            if order:
+                try:
+                    old_request = Refund.objects.get(order=order)
+                except:
+                    old_request = None
+                    
+                if old_request and old_request is not None:
+                    messages.error(self.request, """
+                        Vous avez déjà effectué une requête de rembousement 
+                        sur cette commande. Vous ne pouvez plus le refaire une 
+                        autre fois.
+                    """)
+                    return redirect('home')
+                
+                else:    
+                    order.refund_requested = True
+                    order.save()
+
+                    # Create the refund request
+                    refund = Refund.objects.create(
+                        user=self.request.user,
+                        name=name,
+                        order=order,
+                        reason=message,
+                        accepted=False,
+                        email=email,
+                        paid=False
+                    )
+                    
+                    
+                    # Sending emails to admins & user
+                    admin_email_on_refund(self.request, refund, order)
+                    user_email_on_refund(self.request, refund, order)
+                    
+                    
+                    messages.info(self.request, """
+                        Nous avons bien reçu votre requête de remboursement. 
+                        Elle est en cours de traitement.
+                    """)
+                    return redirect('item-list')
+                
 
 
 

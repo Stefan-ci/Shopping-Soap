@@ -19,8 +19,8 @@ class OrderItem(models.Model):
         verbose_name='Date')
 
     class Meta:
-        verbose_name = "Choix de menus"
-        verbose_name_plural = "Choix de menus"
+        verbose_name = "Choix du panier"
+        verbose_name_plural = "Choix des paniers"
 
 
     def __str__(self):
@@ -85,6 +85,8 @@ class Order(models.Model):
     
     get_shipping_total = models.BigIntegerField(default=0, 
         verbose_name="Frais de livraison")
+    
+    
     coupon = models.ForeignKey(Coupon, on_delete=models.DO_NOTHING, 
         blank=True, null=True)
     order_total = models.BigIntegerField(null=True, blank=True, 
@@ -117,10 +119,11 @@ class Order(models.Model):
     def __str__(self):
         if self.unique_code:
             return str(self.unique_code)
-        return str(self.id)
+        return str(self.pk)
 
 
-    
+    def calculate_shipping_fee(self):
+        pass
 
 
     def get_total(self):

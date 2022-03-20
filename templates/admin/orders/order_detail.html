@@ -96,7 +96,7 @@
                                         Somme à payer à la livraison:
                                     </strong>
                                     <span class="text-success f-rem-15">
-                                        {{ order.get_total }} FCFA
+                                        {{ order.order_total }} FCFA
                                     </span>
                                 </div>
                                 {% if order.being_delivered %}
@@ -179,7 +179,7 @@
                                     {% endif %}
                                     <li class="list-group-item d-flex justify-content-between">
                                         <span>Total TTC (à payer à la livraison)</span>
-                                        <h3>{{ order.get_total }} FCFA</h3>
+                                        <h3>{{ order.order_total }} FCFA</h3>
                                     </li>
                                 </ul>
                             </div>

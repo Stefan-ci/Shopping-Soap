@@ -289,7 +289,7 @@ COUNTRIES_FIRST = [
 ###############################################################
 ########         STAR RATINGS CONFIGS             #############
 ###############################################################
-STAR_RATINGS_ANONYMOUS = True
+STAR_RATINGS_ANONYMOUS = False
 STAR_RATINGS_STAR_WIDTH = 12
 STAR_RATINGS_STAR_HEIGHT = 12
 
