@@ -59,9 +59,7 @@
     {% block navbar %}
         {% include 'public/includes/navbar.html' %}
     {% endblock navbar %}
-    <div id="main">
-        {% block content %}{% endblock content %}
-    </div>
+    {% block content %}{% endblock content %}
     {% block extra_content %}{% endblock extra_content %}
     {% block footer %}
         {% include 'public/includes/footer.html' %}

@@ -80,11 +80,6 @@
 				</li>
 				{% endif %}
 
-				<li class="{% if request.path_info == '/contactez-nous/' %}active{% endif %}">
-					<a href="{% url 'contact' %}">
-						Contact
-					</a>
-				</li>
 
 				{% if request.user.is_superuser %}
 				<li>
@@ -215,12 +210,6 @@
                             </li>
 							{% endif %}
 
-                            <li class="{% if request.path_info == '/contactez-nous/' %}active{% endif %}">
-								<a href="{% url 'contact' %}">
-									Contact
-								</a>
-							</li>
-
 							{% if request.user.is_superuser %}
 							<li>
 								<a href="#">Admin</a>
@@ -317,6 +306,7 @@
 								</button>
                             </form>
                         </div>
+						{% if request.path_info == '/contactes-nous/' %}
                         <div class="hero__search__phone">
                             <div class="hero__search__phone__icon">
                                 <i class="fa fa-phone"></i>
@@ -330,6 +320,7 @@
 								</span>
                             </div>
                         </div>
+						{% endif %}
                     </div>
                 </div>
             </div>
