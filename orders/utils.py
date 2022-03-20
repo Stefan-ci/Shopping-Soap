@@ -13,9 +13,9 @@ def admin_email_on_order(request, order):
     curr_order = get_object_or_404(Order, id=order.id)
     team = get_current_site(request)
     receivers = []
-    admins = settings.ADMINS
+    admins = dict(settings.ADMINS)
     for admin in admins:
-        receivers.append(admin.email)
+        receivers.append(admins[admin])
     
     context = {
         'team': team,

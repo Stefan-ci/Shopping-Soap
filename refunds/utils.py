@@ -15,9 +15,9 @@ def admin_email_on_refund(request, refund, order):
 
     team = get_current_site(request)
     receivers = []
-    admins = settings.ADMINS
+    admins = dict(settings.ADMINS)
     for admin in admins:
-        receivers.append(admin)
+        receivers.append(admins[admin])
     
     context = {
         'team': team,
