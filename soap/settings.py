@@ -15,14 +15,18 @@ import os
 #############################################################
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = SECRET_KEY = config('SECRET_KEY')
-DEBUG = True
+DEBUG = False
 SITE_ID = 1
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'ivoire-soap.herokuapp.com']
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 WSGI_APPLICATION = 'soap.wsgi.application'
 ROOT_URLCONF = 'soap.urls'
 LOGIN_URL = 'login'
-ADMINS = ['claverdiby9@gmail.com', 'kiuv.abraj@gmail.com', 'kielhans07@gmail.com']
+ADMINS = [
+    ('Claver DIBY', 'claverdiby9@gmail.com'),
+    ('Kiuv ABRAJ', 'kiuv.abraj@gmail.com'),
+    ('Kiel HANS', 'kielhans07@gmail.com'),
+]
 STAFF = ['claverdiby9@gmail.com', 'kiuv.abraj@gmail.com', 'kielhans07@gmail.com']
 
 SITE_NAME = 'Savon'
