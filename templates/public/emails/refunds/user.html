@@ -1,0 +1,150 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Votre requête de remboursement sur la commande: {{ curr_order.unique_code }}
+    </title>
+</head>
+<body>
+    <div class="container">
+        <div class="row h-100">
+            <div class="text-center">
+                <h2>
+                    Bonjour,
+                    Votre requête de remboursement sur la commande: 
+                    <strong class="text-success">
+                        {{ curr_order.unique_code }}
+                    </strong>
+                </h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>
+                    Vous avez effectué une requête de remboursement
+                    le {{ curr_req.date|date:"d F Y" }}
+                    sur Ivoire Bouffe, le restaurant qui vous forunit tous les mets délicieux et ce, 
+                    de très bonne qualité.
+                </p>
+                <p>
+                    Ce message vous a été envoyé suite à votre requête.
+                    Juste pour voir les détails de la commande sur laquelle vous demandez à
+                    être remboursé(e), nous vous les affichons ci-dessous.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h3 class="text-muted">
+                    Détails de votre commande.
+                </h3>
+                <ul class="list-group mb-3 z-depth-1">
+                    {% for item in curr_order.items.all %}
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <p class="my-0">
+                                <strong class="text-danger">{{ item.quantity }} </strong>
+                                x
+                                <strong>{{ item.item.name}}</strong>
+                            </p>
+                        </div>
+                        <b class="text-muted">{{ item.get_final_price }} fcfa</b>
+                    </li>
+                    {% endfor %}
+
+                    {% if curr_order.coupon %}
+                    <li class="list-group-item d-flex justify-content-between bg-light">
+                        <div class="text-success">
+                            <h6 class="my-0">
+                                Valeur du coupon
+                            </h6>
+                            <small>{{ curr_order.coupon.code }}</small>
+                        </div>
+                        <b class="text-success">-{{ curr_order.coupon.amount }} fcfa</b>
+                    </li>
+                    {% endif %}
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Total TTC (à payer à la livraison)</span>
+                        <h3>{{ curr_order.get_total }} FCFA</h3>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row pt-5">
+            <div class="col-12">
+                <h2>
+                    Coordonnées de livraison
+                </h2>
+
+                <div class="col-md-6">
+                    <ul class="list-group mb-3 z-depth-1">
+                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                            <div>
+                                <p class="my-0">
+                                    <span>
+                                        N° de téléphone:
+                                    </span>
+                                    <strong>
+                                        {{ curr_order.shipping_phonenumber }}
+                                    </strong>
+                                </p>
+                                <p class="my-0">
+                                    <span>
+                                       Ville:
+                                    </span>
+                                    <strong>
+                                        {{ curr_order.shipping_city }}
+                                    </strong>
+                                </p>
+                                <p class="my-0">
+                                    <span>
+                                        Quartier:
+                                    </span>
+                                    <strong>
+                                        {{ curr_order.shipping_neighborhood }}
+                                    </strong>
+                                </p>
+                                <p class="my-0">
+                                    <span>
+                                        Appartement:
+                                    </span>
+                                    <strong>
+                                        {{ curr_order.shipping_appartment }}
+                                    </strong>
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 pt-3 pb-2">
+                <h6>
+                    <em>
+                        Nous nous excusons des désagréments que votre mauvaise expérience 
+                        a pu causés.
+                        Nos équipes ont reçu votre requête et elle est en cours de traitement.
+                        Nous vous reconcterons pour plus de détails.
+                    </em>
+                </h6>
+            </div>
+        </div>
+        <div class="row pt-3">
+            <div class="col-md-6 text-right">
+                <small>
+                    <em>
+                        Message automatique envoyé à {{ curr_req.email }}
+                        depuis le site <a href="{{ team }}">{{ team }}</a>
+                    </em><br>
+                    Veuillez ne pas répondre à ce message.
+                </small>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

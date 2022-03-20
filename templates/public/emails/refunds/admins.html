@@ -1,0 +1,156 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Requête de remboursement sur la commande: {{ curr_order.unique_code }}
+    </title>
+</head>
+<body>
+    <div class="container">
+        <div class="row h-100">
+            <div class="text-center">
+                <h2>
+                   Requête de remboursement sur la commande:
+                   <strong class="text-success">
+                       {{ curr_order.unique_code }}
+                   </strong>
+                </h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>
+                    L'utilisateur <b>{{ curr_order.user.username }}</b> 
+                    vient d'effectuer une requête de remboursement sur votre site de restaurant
+                    en ligne.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>
+                    Il a effectué sa commande 
+                    {{ curr_order.ordered_date|naturaltime }}.
+                </p>
+                <p>
+                    Merci de donner suite à sa requête dans les plus brefs délais!
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h3 class="text-muted">
+                    Détails de sa commande.
+                </h3>
+                <ul class="list-group mb-3 z-depth-1">
+                    {% for item in curr_order.items.all %}
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <p class="my-0">
+                                <strong class="text-danger">{{ item.quantity }} </strong>
+                                fois
+                                <strong>{{ item.item.name}}</strong>
+                            </p>
+                        </div>
+                        <b class="text-muted">{{ item.get_final_price }} fcfa</b>
+                    </li>
+                    {% endfor %}
+
+                    {% if curr_order.coupon %}
+                    <li class="list-group-item d-flex justify-content-between bg-light">
+                        <div class="text-success">
+                            <h6 class="my-0">
+                                Coupon
+                            </h6>
+                            <small>{{ curr_order.coupon.code }}</small>
+                        </div>
+                        <b class="text-success">-{{ curr_order.coupon.amount }} fcfa</b>
+                    </li>
+                    {% endif %}
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Total TTC (à payer à la livraison)</span>
+                        <h3>{{ curr_order.get_total }} FCFA</h3>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row pt-5">
+            <div class="col-12">
+                <h2>
+                    Coordonnées de livraison
+                </h2>
+
+                <div class="col-md-6">
+                    <ul class="list-group mb-3 z-depth-1">
+                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                            <div>
+                                <p class="my-0">
+                                    <span>
+                                        N° de téléphone:
+                                    </span>
+                                    <strong>
+                                        {{ curr_order.shipping_phonenumber }}
+                                    </strong>
+                                </p>
+                                <p class="my-0">
+                                    <span>
+                                       Ville:
+                                    </span>
+                                    <strong>
+                                        {{ curr_order.shipping_city }}
+                                    </strong>
+                                </p>
+                                <p class="my-0">
+                                    <span>
+                                        Quartier:
+                                    </span>
+                                    <strong>
+                                        {{ curr_order.shipping_neighborhood }}
+                                    </strong>
+                                </p>
+                                <p class="my-0">
+                                    <span>
+                                        Appartement:
+                                    </span>
+                                    <strong>
+                                        {{ curr_order.shipping_appartment }}
+                                    </strong>
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row pt-3">
+            <div class="col-md-6 text-right">
+                <small>
+                    <em>
+                        Message automatique du site <a href="{{ team }}">{{ team }}</a>
+                    </em>
+                </small>
+            </div>
+        </div>
+        {% if receivers %}
+        <div class="row pt-4">
+            <div class="col-6">
+                Ce message a été envoyé à:
+                <p>
+                    <ul class="list-group mb-3 z-depth-1">
+                        {% for admin_email in receivers %}
+                        <li>
+                            <a href="mailto:{{ admin_email }}">{{ admin_email }}</a><br>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

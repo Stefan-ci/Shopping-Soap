@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Message de {{ name }}
+    </title>
+</head>
+<body>
+    <div class="container">
+        <div class="row h-100">
+            <div class="text-center">
+                <h2>
+                    Message de {{ name }} !
+                </h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>
+                    Monsieur/Madame <b>{{ name }}</b> vous a contacté
+                    via votre restaurant en ligne.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>
+                    Son message est: <br>
+                    <p class="breadcomb">
+                        {{ message }}
+                    </p>
+                    Et son adresse mail est: <strong>{{ email }}</strong>
+                    <p></p>
+                </p>
+                <p>
+                    Merci de lui répondre dans les plus brefs délais!
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 text-right">
+                <small>
+                    <em>
+                        Message automatique de l'équipe de <a href="{{ team }}">{{ team }}</a>
+                    </em>
+                </small>
+            </div>
+        </div>
+        {% if email_receivers %}
+        <div class="row">
+            <div class="col-6">
+                Ce message a été envoyé à:
+                <p>
+                    <ul>
+                        {% for admin_email in email_receivers %}
+                        <li>
+                            <a href="mailto:{{ admin_email }}">{{ admin_email }}</a><br>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

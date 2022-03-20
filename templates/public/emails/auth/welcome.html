@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Bienvenue {{ username }}
+    </title>
+</head>
+<body>
+    <div class="text-center">
+        <h3>
+            Bonjour {{ username }} !
+        </h3>
+    </div>
+    <div class="col-12">
+        <p>
+            Nous sommes très heureux de vous voir parmi nous.
+            Nous comptons bien vivre cette aventure ensemble main dans la main.
+            <br>
+            Pour nous avoir rejoints, nous vous offrons
+            un petit cadeau en guise de bienvenue.
+        </p>
+    </div>
+
+    <div class="col-6">
+        <p>
+            Vous bénéficiez dès maintenant d'un coupon de réduction 
+            sur notre site. Ce code de réduction vous offre gratuitement
+            <strong>{{ coupon_amount }} FCFA</strong> sur votre prochain achat. 
+            Veuillez donc l'utiliser avant le {{ coupon_end_date }}.
+        </p>
+        <p>
+            Code du coupon: <h4>{{ coupon_code }}</h4>
+        </p>
+    </div>
+
+    <div class="col-md-4 text-right">
+        <small>
+            <span>
+                Merci !
+            </span><br><br>
+            <em>
+                Message automatique de l'équipe de <a href="{{ team }}">{{ team }}</a>
+            </em>
+        </small>
+    </div>
+</body>
+</html>

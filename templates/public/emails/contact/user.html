@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Merci de nous avoir contacté {{ name }}
+    </title>
+</head>
+<body>
+    <div class="container">
+        <div class="row h-100">
+            <div class="text-center">
+                <h4>
+                    Merci de nous avoir contacté {{ name }} !
+                </h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>
+                    Merci <b>{{ name }}</b> de nous avoir contacté! Nous vous repondrons
+                    très prochainement.<br><br><br>
+                    Merci et à bientôt !
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 text-right">
+                <small>
+                    <em>
+                        Message automatique de l'équipe de <a href="{{ team }}">{{ team }}</a>
+                    </em>
+                </small>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

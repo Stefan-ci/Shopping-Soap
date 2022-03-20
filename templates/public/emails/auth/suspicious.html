@@ -1,0 +1,69 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Activités suspectes sur votre compte.
+    </title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="text-center">
+                <h3>
+                    Bonjour {{ username }} !
+                </h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>
+                    Nous avons remarqué des activités inhabituelles sur votre compte 
+                    {{ login_date|naturaltime }}.
+                    <br>
+                    Vous vous êtes conneté(e) avec une nouvelle adresse IP qui n'est pas reconnue.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>
+                    Votre ancienne adresse est: <b>{{ last_ip }}</b>.
+                    Et votre nouvelle adresse IP est <b>{{ new_ip }}</b>.
+                </p>
+            </div>
+        </div>
+        {% if old_browser %}
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <small>
+                    Vous avez aussi changé le navigateur de votre dernière connexion.
+                </small>
+            </div>
+        </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-12">
+                Si vous reconnaissez cette activité, ignorez simplement cet avertissement.
+                Dans le cas contraire, veuillez-vous connecter afin de changer votre mot de passe.
+                Qulqu'un d'autre s'est probablement connecté à votre compte à votre insu.
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 text-right">
+                <small>
+                    <span>
+                        Merci !
+                    </span><br><br>
+                    <em>
+                        Message automatique de l'équipe de <a href="{{ team }}">{{ team }}</a>
+                    </em>
+                </small>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
