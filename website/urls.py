@@ -18,7 +18,7 @@ urlpatterns = [
     
     
 	# Categories URLs
-    path('catalogues/tout/', views.all_items_list_view, name='all-items'),
+    path('catalogues/tout/', views.all_items_list_view, name='items-all'),
     path('catalogues/femmes/', views.women_items_list_view, name='women-items'),
     path('catalogues/hommes/', views.men_items_list_view, name='men-items'),
     path('catalogues/enfants/', views.children_items_list_view, name='children-items'),
