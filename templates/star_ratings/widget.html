@@ -4,4 +4,9 @@
 
 {% block rating_average %}{% endblock rating_average %}
 
-{% block rating_count %}({{ rating.count }}  avis){% endblock rating_count %}
+{% block rating_count %}
+    {% if request.path_info == '/' %}
+    {% else %}
+        ({{ rating.count }}  avis)
+    {% endif %}
+{% endblock rating_count %}

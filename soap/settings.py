@@ -297,7 +297,7 @@ COUNTRIES_FIRST = [
 STAR_RATINGS_ANONYMOUS = False
 STAR_RATINGS_STAR_WIDTH = 12
 STAR_RATINGS_STAR_HEIGHT = 12
-
+STAR_RATINGS_RERATE = True
 
 
 ###############################################################

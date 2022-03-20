@@ -141,6 +141,9 @@
                                     {{ item.name|safe }}
                                 </a>
                             </h6>
+                            <div class="product__details__rating">
+                                {% ratings item %}
+                            </div>
                             <h5>
                                 {% if item.get_price == 0 %}
                                 <span class="text-danger">
